@@ -13,55 +13,60 @@ st.markdown("""
         background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
-    /* Arapça Harf Kutusu */
+    /* Arapça Harf Kutusu (Çalışma Modu) */
     .arapca-kutu {
         text-align: center; 
         font-size: 180px; 
         background-color: #ffffff; 
-        border: 4px solid #d4af37; /* Altın Sarısı Çerçeve */
+        border: 4px solid #d4af37; 
         border-radius: 30px; 
         padding: 40px;
         color: #2c3e50; 
         font-family: 'Amiri', serif;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Derinlik Gölgesi */
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         direction: rtl; 
         line-height: 1.2; 
         margin-bottom: 30px;
-        transition: transform 0.3s ease; /* Animasyon */
+        transition: transform 0.3s ease; 
     }
-    
-    /* Kutuya mouse gelince büyüme efekti */
     .arapca-kutu:hover {
         transform: scale(1.02);
         box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
     }
 
-    /* İlerleme Çubuğu Rengi */
-    .stProgress > div > div > div > div {
-        background-color: #27ae60; /* İslami Yeşil */
+    /* Sınav Modu Butonları İçin Stil */
+    .stButton button {
+        font-family: 'Amiri', serif !important;
+        font-size: 40px !important;
+        font-weight: bold;
+        padding: 20px;
+        border-radius: 15px;
+        border: 2px solid #d4af37;
+        transition: 0.3s;
+    }
+    .stButton button:hover {
+        background-color: #fcf3cf;
+        border-color: #b7950b;
+        transform: scale(1.05);
     }
 
-    /* Buton Stilleri */
-    .stButton > button {
-        border-radius: 12px;
-        font-weight: bold;
-        border: none;
-        transition: 0.3s;
+    /* İlerleme Çubuğu Rengi */
+    .stProgress > div > div > div > div {
+        background-color: #27ae60; 
     }
     </style>
     """, unsafe_allow_html=True)
 
+# Session State Başlatma
 if "bolum" not in st.session_state:
-    st.session_state.update({"bolum": "1. Yalın Harfler", "alt_adim": 0, "calindi": ""})
-
-# --- DEBUG: DOSYA KONTROLÜ ---
-with st.sidebar:
-    st.title("🌙 Akademi Paneli")
-    if os.path.exists("sesler"):
-        dosyalar = os.listdir("sesler")
-        st.success(f"✅ Sistem Aktif: {len(dosyalar)} ders dosyası yüklü.")
-    else:
-        st.error("🚨 HATA: 'sesler' klasörü bulunamadı!")
+    st.session_state.update({
+        "bolum": "1. Yalın Harfler", 
+        "alt_adim": 0, 
+        "calindi": "", 
+        "quiz_hedef": None,
+        "quiz_secenekler": [],
+        "puan": 0
+    })
 
 # --- 2. SES MOTORU ---
 def sesi_cal(dosya_adi):
@@ -73,7 +78,8 @@ def sesi_cal(dosya_adi):
             unique_timestamp = int(time.time() * 1000)
             st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
-        st.warning(f"⚠️ Ses Dosyası Eksik: {dosya_adi}.mp3")
+        # Ses dosyası yoksa uyarı verme (Quiz akışını bozmamak için)
+        pass
 
 # --- 3. MÜFREDAT (12 Seviye - Full Paket) ---
 mufredat = {
@@ -191,7 +197,7 @@ mufredat = {
     ]
 }
 
-# --- 4. ARAYÜZ VE TEST MODU ---
+# --- 4. ARAYÜZ ---
 with st.sidebar:
     st.title("🌙 Akademi Paneli")
     
@@ -202,13 +208,13 @@ with st.sidebar:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
-        if "test_liste" in st.session_state:
-            del st.session_state["test_liste"]
+        st.session_state.quiz_hedef = None # Mod değişirse quiz sıfırla
         st.rerun()
 
     st.divider()
-    # Test Modu
-    test_modu = st.checkbox("🎯 Hızlı Test Modu (Karışık)")
+    
+    # MOD SEÇİMİ
+    mod = st.radio("Mod Seçimi:", ["📖 Çalışma Modu", "🎮 Sınav Modu (Quiz)"])
     
     st.divider()
     # Puan Durumu
@@ -219,61 +225,95 @@ with st.sidebar:
             <span style="font-size:24px;">{puan}</span>
         </div>
     """, unsafe_allow_html=True)
+    
+    # İMZA KISMI
+    st.divider()
+    st.info("👨‍💻 Geliştirici: BURAYA ADINI YAZ \n\n 📅 Versiyon: 1.1 (Game Mode)")
+
 
 # --- ANA EKRAN MANTIĞI ---
-standart_liste = mufredat[st.session_state.bolum]
+ders_listesi = mufredat[st.session_state.bolum]
 
-if test_modu:
-    if "test_liste" not in st.session_state:
-        st.session_state.test_liste = standart_liste.copy()
-        random.shuffle(st.session_state.test_liste)
-        st.session_state.alt_adim = 0
-    liste = st.session_state.test_liste
-    baslik_ek = " (KARIŞIK MOD)"
-else:
-    liste = standart_liste
-    if "test_liste" in st.session_state:
-        del st.session_state["test_liste"]
-        st.session_state.alt_adim = 0
-    baslik_ek = ""
-
-if st.session_state.alt_adim < len(liste):
-    mevcut = liste[st.session_state.alt_adim]
+# ================================
+# MOD 1: ÇALIŞMA MODU (ESKİ SİSTEM)
+# ================================
+if mod == "📖 Çalışma Modu":
+    st.subheader(f"📖 {st.session_state.bolum}")
     
-    st.subheader(f"📖 {st.session_state.bolum}{baslik_ek}")
-    st.progress((st.session_state.alt_adim + 1) / len(liste))
-    
-    # Arapça Kutusu
-    st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
-    
-    # Otomatik Ses
-    ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
-    if st.session_state.calindi != ident:
-        sesi_cal(mevcut['s'])
-        st.session_state.calindi = ident
-
-    c1, c2 = st.columns(2)
-    with c1:
-        if st.button("🔊 Tekrar Dinle", use_container_width=True): 
+    if st.session_state.alt_adim < len(ders_listesi):
+        mevcut = ders_listesi[st.session_state.alt_adim]
+        st.progress((st.session_state.alt_adim + 1) / len(ders_listesi))
+        
+        # Arapça Kutusu
+        st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
+        
+        # Otomatik Ses
+        ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
+        if st.session_state.calindi != ident:
             sesi_cal(mevcut['s'])
-            
-    with c2:
-        if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
-            st.session_state.alt_adim += 1
-            if test_modu:
-                st.session_state.puan = st.session_state.get('puan', 0) + 10
+            st.session_state.calindi = ident
+
+        c1, c2 = st.columns(2)
+        with c1:
+            if st.button("🔊 Tekrar Dinle", use_container_width=True): 
+                sesi_cal(mevcut['s'])
+                
+        with c2:
+            if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
+                st.session_state.alt_adim += 1
+                st.session_state.puan += 5 # Çalışma puanı
+                st.rerun()
+    else:
+        st.balloons()
+        st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
+        if st.button("🔄 Başa Dön", use_container_width=True):
+            st.session_state.alt_adim = 0
             st.rerun()
+
+# ================================
+# MOD 2: SINAV MODU (QUIZ OYUNU)
+# ================================
 else:
-    st.balloons()
-    st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
-    st.info(f"Toplam Puanınız: {st.session_state.get('puan', 0)}")
-    if st.button("🔄 Başa Dön", use_container_width=True):
-        st.session_state.alt_adim = 0
-        if "test_liste" in st.session_state:
-            del st.session_state["test_liste"]
-        st.rerun()
+    st.subheader(f"🎮 Sesi Bul: {st.session_state.bolum}")
+    st.info("🔊 Sesi dinle ve doğru harfi bul!")
+    
+    # Yeni soru oluştur (Eğer hedef yoksa)
+    if st.session_state.quiz_hedef is None:
+        hedef = random.choice(ders_listesi)
+        # Yanlış seçenekler (Kendisi hariç 2 tane)
+        yanlislar = random.sample([x for x in ders_listesi if x != hedef], 2)
+        secenekler = [hedef] + yanlislar
+        random.shuffle(secenekler)
+        
+        st.session_state.quiz_hedef = hedef
+        st.session_state.quiz_secenekler = secenekler
+        
+        # Sesi Çal
+        sesi_cal(hedef['s'])
+
+    # Sesi Tekrar Çal Butonu
+    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True):
+        sesi_cal(st.session_state.quiz_hedef['s'])
+
+    st.write("") # Boşluk
+
+    # Seçenekleri Göster (3 Buton Yan Yana)
+    cols = st.columns(3)
+    for i, secenek in enumerate(st.session_state.quiz_secenekler):
+        with cols[i]:
+            # Butona basılınca kontrol et
+            if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
+                if secenek == st.session_state.quiz_hedef:
+                    st.balloons()
+                    st.success("✅ DOĞRU CEVAP!")
+                    st.session_state.puan += 20
+                    time.sleep(1) # Kutlama süresi
+                    st.session_state.quiz_hedef = None # Yeni soru için sıfırla
+                    st.rerun()
+                else:
+                    st.error("❌ Yanlış, tekrar dene!")
+                    st.session_state.puan = max(0, st.session_state.puan - 5)
 
 # --- İMZA KISMI (EN ALTA EKLE) ---
 st.sidebar.divider()
 st.sidebar.info("👨‍💻 Geliştirici: Sertaş Bedir \n\n 📅 Versiyon: 1.0 Gold")
-
