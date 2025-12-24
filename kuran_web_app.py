@@ -1,20 +1,53 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR ---
-st.set_page_config(page_title="Elif-Ba Akademi", page_icon="📖", layout="centered")
+# --- 1. AYARLAR VE PROFESYONEL TASARIM ---
+st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
-    .arapca-kutu {
-        text-align:center; font-size:200px; background-color:#f8f9fa; 
-        border: 4px solid #2E86C1; border-radius:25px; padding:30px;
-        color: #1A5276; font-family: 'Amiri', serif;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        direction: rtl; line-height: 1.1; margin-bottom: 20px;
+    
+    /* Ana Arka Plan */
+    .stApp {
+        background: linear-gradient(to bottom, #f0f8ff, #e6e9f0);
     }
-    .stProgress > div > div > div > div { background-color: #2E86C1; }
+
+    /* Arapça Harf Kutusu */
+    .arapca-kutu {
+        text-align: center; 
+        font-size: 180px; 
+        background-color: #ffffff; 
+        border: 4px solid #d4af37; /* Altın Sarısı Çerçeve */
+        border-radius: 30px; 
+        padding: 40px;
+        color: #2c3e50; 
+        font-family: 'Amiri', serif;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Derinlik Gölgesi */
+        direction: rtl; 
+        line-height: 1.2; 
+        margin-bottom: 30px;
+        transition: transform 0.3s ease; /* Animasyon */
+    }
+    
+    /* Kutuya mouse gelince büyüme efekti */
+    .arapca-kutu:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
+    }
+
+    /* İlerleme Çubuğu Rengi */
+    .stProgress > div > div > div > div {
+        background-color: #27ae60; /* İslami Yeşil */
+    }
+
+    /* Buton Stilleri */
+    .stButton > button {
+        border-radius: 12px;
+        font-weight: bold;
+        border: none;
+        transition: 0.3s;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -26,9 +59,9 @@ with st.sidebar:
     st.title("🌙 Akademi Paneli")
     if os.path.exists("sesler"):
         dosyalar = os.listdir("sesler")
-        st.success(f"Sistem Hazır: {len(dosyalar)} ses dosyası.")
+        st.success(f"✅ Sistem Aktif: {len(dosyalar)} ders dosyası yüklü.")
     else:
-        st.error("HATA: 'sesler' klasörü yok!")
+        st.error("🚨 HATA: 'sesler' klasörü bulunamadı!")
 
 # --- 2. SES MOTORU ---
 def sesi_cal(dosya_adi):
@@ -40,9 +73,9 @@ def sesi_cal(dosya_adi):
             unique_timestamp = int(time.time() * 1000)
             st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
-        st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
+        st.warning(f"⚠️ Ses Dosyası Eksik: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (Tam 9 Seviye) ---
+# --- 3. MÜFREDAT (9 Seviye Tam Liste) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -134,22 +167,31 @@ mufredat = {
 # --- 4. ARAYÜZ VE TEST MODU ---
 with st.sidebar:
     st.title("🌙 Akademi Paneli")
+    
+    # Bölüm Seçimi
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     
-    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
-        # Test modundan çıkınca listeyi temizle
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
 
     st.divider()
-    test_modu = st.checkbox("🎯 Hızlı Test Modu (Karışık Sor)")
+    # Test Modu
+    test_modu = st.checkbox("🎯 Hızlı Test Modu (Karışık)")
+    
     st.divider()
-    st.success(f"Puan: {st.session_state.get('puan', 0)}")
+    # Puan Durumu
+    puan = st.session_state.get('puan', 0)
+    st.markdown(f"""
+        <div style="background-color:#27ae60; padding:10px; border-radius:10px; text-align:center; color:white;">
+            <strong>🏆 Toplam Puan:</strong><br>
+            <span style="font-size:24px;">{puan}</span>
+        </div>
+    """, unsafe_allow_html=True)
 
 # --- ANA EKRAN MANTIĞI ---
 standart_liste = mufredat[st.session_state.bolum]
@@ -159,7 +201,6 @@ if test_modu:
         st.session_state.test_liste = standart_liste.copy()
         random.shuffle(st.session_state.test_liste)
         st.session_state.alt_adim = 0
-        
     liste = st.session_state.test_liste
     baslik_ek = " (KARIŞIK MOD)"
 else:
@@ -175,9 +216,10 @@ if st.session_state.alt_adim < len(liste):
     st.subheader(f"📖 {st.session_state.bolum}{baslik_ek}")
     st.progress((st.session_state.alt_adim + 1) / len(liste))
     
+    # Arapça Kutusu
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
-    # --- SES ÇALMA (Test modunda da otomatik çalsın) ---
+    # Otomatik Ses
     ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
     if st.session_state.calindi != ident:
         sesi_cal(mevcut['s'])
@@ -196,7 +238,8 @@ if st.session_state.alt_adim < len(liste):
             st.rerun()
 else:
     st.balloons()
-    st.success(f"Bölüm Tamamlandı! Toplam Puan: {st.session_state.get('puan', 0)}")
+    st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
+    st.info(f"Toplam Puanınız: {st.session_state.get('puan', 0)}")
     if st.button("🔄 Başa Dön", use_container_width=True):
         st.session_state.alt_adim = 0
         if "test_liste" in st.session_state:
