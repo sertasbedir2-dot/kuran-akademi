@@ -49,7 +49,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"🔈 Ses dosyası bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (Eksiksiz 28 Harf ve Harekeler) ---
+# --- 3. TAM MÜFREDAT (GitHub'daki Mevcut Dosya İsimlerinize Göre Düzenlendi) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -62,12 +62,12 @@ mufredat = {
     ],
     "2. Üstün (E-A)": [
         {"h": "اَ", "s": "e"}, {"h": "بَ", "s": "be_ust"}, {"h": "تَ", "s": "te_ust"}, {"h": "ثَ", "s": "se_ust"},
-        {"h": "جَ", "s": "ce"}, {"h": "حَ", "s": "ha_ust"}, {"h": "خَ", "s": "hi_ust"}, {"h": "دَ", "s": "dal_ust"},
-        {"h": "ذَ", "s": "zel_ust"}, {"h": "رَ", "s": "re_ust"}, {"h": "زَ", "s": "ze_ust"}, {"h": "سَ", "s": "sin_ust"},
-        {"h": "شَ", "s": "sin_n_ust"}, {"h": "صَ", "s": "sad_ust"}, {"h": "ضَ", "s": "dad_ust"}, {"h": "طَ", "s": "ti_ust"},
-        {"h": "ظَ", "s": "zi_ust"}, {"h": "عَ", "s": "ayin_ust"}, {"h": "غَ", "s": "gayin_ust"}, {"h": "فَ", "s": "fe_ust"},
-        {"h": "قَ", "s": "kaf_ust"}, {"h": "كَ", "s": "kef_ust"}, {"h": "لَ", "s": "lam_ust"}, {"h": "مَ", "s": "mim_ust"},
-        {"h": "نَ", "s": "nun_ust"}, {"h": "وَ", "s": "vav_ust"}, {"h": "هَ", "s": "he_ust"}, {"h": "يَ", "s": "ye_ust"}
+        {"h": "جَ", "s": "ce"}, {"h": "حَ", "s": "ha_ust"}, {"h": "خَ", "s": "ha_k"}, {"h": "دَ", "s": "de"},
+        {"h": "ذَ", "s": "zel_ust"}, {"h": "رَ", "s": "ra"}, {"h": "زَ", "s": "ze_ust"}, {"h": "سَ", "s": "se_u2"},
+        {"h": "شَ", "s": "sin_n_ust"}, {"h": "صَ", "s": "sa"}, {"h": "ضَ", "s": "da"}, {"h": "طَ", "s": "ta"},
+        {"h": "ظَ", "s": "za"}, {"h": "عَ", "s": "ayin_ust"}, {"h": "غَ", "s": "ga"}, {"h": "فَ", "s": "fe_ust"},
+        {"h": "قَ", "s": "ka"}, {"h": "كَ", "s": "ke"}, {"h": "لَ", "s": "le"}, {"h": "مَ", "s": "me"},
+        {"h": "نَ", "s": "ne"}, {"h": "وَ", "s": "ve"}, {"h": "هَ", "s": "he_ust"}, {"h": "يَ", "s": "ye_ust"}
     ],
     "3. Esre (İ-I)": [
         {"h": "اِ", "s": "i_ince"}, {"h": "بِ", "s": "bi_esre"}, {"h": "تِ", "s": "ti_esre"}, {"h": "ثِ", "s": "si_p_esre"},
@@ -144,3 +144,4 @@ else:
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
         st.rerun()
+
