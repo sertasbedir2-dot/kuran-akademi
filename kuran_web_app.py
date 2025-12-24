@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE TASARIM (DEVASA HARFLER İÇİN ÖZEL CSS) ---
+# --- 1. AYARLAR VE TASARIM (KESİN ÇÖZÜM) ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -13,68 +13,68 @@ st.markdown("""
         background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
-    /* 1. ARAPÇA HARF BUTONLARI (BEYAZ OLANLAR)
-       Burayı sadece harfler kullanacağı için fontu devasa yapıyoruz.
-    */
+    /* --- BUTON TASARIMLARI (BALYOZ YÖNTEMİ) --- */
+
+    /* 1. TÜM BUTONLAR İÇİN TEMEL AYAR */
     .stButton > button {
-        font-family: 'Amiri', serif !important;
-        font-size: 100px !important;  /* HARF BOYUTU BURADAN AYARLANIYOR */
-        font-weight: bold;
-        
-        /* Kutunun boyutu */
-        height: 160px !important; 
-        width: 100% !important;
-        
-        /* Harfi merkeze çivilemek için ayarlar */
-        padding: 0px !important;
-        margin: 0px !important;
-        line-height: 1.2 !important; /* Satır yüksekliği, harfi aşağı yukarı oynatır */
-        
         border-radius: 20px;
         border: 3px solid #d4af37;
-        background-color: white;
-        color: #2c3e50;
         transition: 0.2s;
-        
-        /* Flexbox ile tam orta */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Beyaz Buton Hover (Üzerine gelince) */
-    .stButton > button:hover {
-        background-color: #fcf3cf; 
-        border-color: #b7950b;
-        transform: scale(1.03);
+        width: 100%;
     }
 
-    /* Beyaz Buton Focus (Tıklama sonrası renk takılmasını önler) */
-    .stButton > button:focus:not(:active) {
+    /* 2. BEYAZ BUTONLAR (ARAPÇA HARFLER) */
+    /* Kırmızı (primary) olmayan tüm butonları hedefler */
+    .stButton > button:not([kind="primary"]) {
+        background-color: white;
+        color: #2c3e50;
+        height: 160px !important; /* Kutu yüksekliği sabit */
+        padding: 0px !important;
+    }
+
+    /* BALYOZ: Butonun içindeki HER ŞEYİ (p, div, span) zorla büyüt */
+    .stButton > button:not([kind="primary"]) * {
+        font-family: 'Amiri', serif !important;
+        font-size: 90px !important;  /* YAZI BOYUTU */
+        line-height: 1.2 !important;
+        font-weight: bold !important;
+        padding-top: 5px !important; /* Ortalamak için ince ayar */
+    }
+
+    /* Beyaz Buton Hover */
+    .stButton > button:not([kind="primary"]):hover {
+        background-color: #fcf3cf; 
+        border-color: #b7950b;
+        transform: scale(1.02);
+    }
+
+    /* Beyaz Buton Focus (Renk takılmasını önler) */
+    .stButton > button:not([kind="primary"]):focus:not(:active) {
         background-color: white !important;
         border-color: #d4af37 !important;
         color: #2c3e50 !important;
         box-shadow: none !important;
     }
 
-    /* 2. KONTROL BUTONLARI (KIRMIZI OLANLAR - PRIMARY) 
-       Tekrar Dinle ve Sonraki Harf butonları buraya dahildir.
-       Bunların yazısı normal kalsın.
-    */
+    /* 3. KIRMIZI BUTONLAR (KONTROL BUTONLARI) */
     .stButton > button[kind="primary"] {
         background-color: #ff4b4b !important;
         color: white !important;
         border: none !important;
-        
-        font-size: 24px !important; /* Normal okuma boyutu */
-        height: 60px !important;    /* Normal yükseklik */
+        height: 70px !important;
+    }
+    
+    /* Kırmızı butonun içindeki yazıyı normal boyutta tut */
+    .stButton > button[kind="primary"] * {
+        font-family: sans-serif !important;
+        font-size: 24px !important;
         line-height: normal !important;
     }
 
     /* Kırmızı Buton Hover */
     .stButton > button[kind="primary"]:hover {
         background-color: #ff3333 !important;
-        transform: scale(1.05);
+        transform: scale(1.03);
         box-shadow: 0 5px 15px rgba(255, 75, 75, 0.4);
     }
 
@@ -85,7 +85,7 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* Çalışma Modundaki Büyük Gösterge Kutusu */
+    /* Çalışma Modu Kutusu */
     .arapca-kutu {
         text-align: center; 
         font-size: 180px; 
@@ -278,7 +278,7 @@ with st.sidebar:
     
     # İMZA KISMI
     st.divider()
-    st.info("👨‍💻 Geliştirici: SERTAŞ BEDİR \n\n 📅 Versiyon: 1.2 (Mega Harfler)")
+    st.info("👨‍💻 Geliştirici: SERTAŞ BEDİR \n\n 📅 Versiyon: 1.3 (Final)")
 
 
 # --- ANA EKRAN MANTIĞI ---
@@ -303,64 +303,4 @@ if mod == "📖 Çalışma Modu":
             sesi_cal(mevcut['s'])
             st.session_state.calindi = ident
 
-        c1, c2 = st.columns(2)
-        with c1:
-            # Buradaki buton primary (Kırmızı)
-            if st.button("🔊 Tekrar Dinle", use_container_width=True, type="primary"): 
-                sesi_cal(mevcut['s'])
-                
-        with c2:
-            if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
-                st.session_state.alt_adim += 1
-                st.session_state.puan += 5 # Çalışma puanı
-                st.rerun()
-    else:
-        st.balloons()
-        st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
-        if st.button("🔄 Başa Dön", use_container_width=True, type="primary"):
-            st.session_state.alt_adim = 0
-            st.rerun()
-
-# ================================
-# MOD 2: SINAV MODU (QUIZ OYUNU)
-# ================================
-else:
-    st.subheader(f"🎮 Sesi Bul: {st.session_state.bolum}")
-    st.info("🔊 Sesi dinle ve doğru harfi bul!")
-    
-    # Yeni soru oluştur (Eğer hedef yoksa)
-    if st.session_state.quiz_hedef is None:
-        hedef = random.choice(ders_listesi)
-        # Yanlış seçenekler (Kendisi hariç 2 tane)
-        yanlislar = random.sample([x for x in ders_listesi if x != hedef], 2)
-        secenekler = [hedef] + yanlislar
-        random.shuffle(secenekler)
-        
-        st.session_state.quiz_hedef = hedef
-        st.session_state.quiz_secenekler = secenekler
-        
-        # Sesi Çal
-        sesi_cal(hedef['s'])
-
-    # Sesi Tekrar Çal Butonu (Kırmızı/Primary)
-    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True, type="primary"):
-        sesi_cal(st.session_state.quiz_hedef['s'])
-
-    st.write("") # Boşluk
-
-    # Seçenekleri Göster (3 Buton Yan Yana)
-    cols = st.columns(3)
-    for i, secenek in enumerate(st.session_state.quiz_secenekler):
-        with cols[i]:
-            # Butona basılınca kontrol et (Beyaz butonlar, CSS ile büyütüldü)
-            if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
-                if secenek == st.session_state.quiz_hedef:
-                    st.balloons()
-                    st.success("✅ DOĞRU!")
-                    st.session_state.puan += 20
-                    time.sleep(1) # Kutlama süresi
-                    st.session_state.quiz_hedef = None # Yeni soru için sıfırla
-                    st.rerun()
-                else:
-                    st.error("❌ Yanlış!")
-                    st.session_state.puan = max(0, st.session_state.puan - 5)
+        c1,
