@@ -314,4 +314,3 @@ else:
                     st.error("❌ Yanlış, tekrar dene!")
                     st.session_state.puan = max(0, st.session_state.puan - 5)
 
-
