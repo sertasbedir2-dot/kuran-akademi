@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ: BÜYÜK HARFLER) ---
+# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ: DEVASA HARFLER) ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -34,21 +34,25 @@ st.markdown("""
         box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
     }
 
-    /* --- BUTON TASARIMLARI (BÜYÜTÜLDÜ) --- */
+    /* --- BUTON TASARIMLARI (DEVASA YAPILDI) --- */
 
-    /* 1. Normal Butonlar (Tekrar Dinle, Seçenekler) */
+    /* 1. Normal Butonlar (Seçenekler ve Dinle Butonu) */
     .stButton > button {
         font-family: 'Amiri', serif !important;
-        font-size: 55px !important; /* Yazı boyutu büyütüldü (30px -> 55px) */
+        font-size: 85px !important; /* Harfler artık ÇOK BÜYÜK */
         font-weight: bold;
-        padding: 10px;
-        min-height: 110px; /* Buton yüksekliği artırıldı */
+        padding: 0px !important; /* Boşlukları sıfırla ki harf sığsın */
+        min-height: 150px !important; /* Kutu yüksekliği */
         border-radius: 20px;
         border: 3px solid #d4af37;
         background-color: white;
         color: #2c3e50;
         transition: 0.2s;
-        line-height: 1.5 !important; /* Yazıyı ortalamak için */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1 !important;
+        padding-bottom: 20px !important; /* Arapça harfleri görsel olarak ortalamak için */
     }
     
     /* Üzerine gelince (Hover) */
@@ -67,13 +71,14 @@ st.markdown("""
     }
 
     /* 2. Kırmızı (Primary) Buton (Sonraki Harf) */
-    /* Bu butonun çok devasa olmaması için fontunu biraz kısıyoruz */
+    /* Bu butonun yazısı çok büyük olmasın diye özel ayar */
     .stButton > button[kind="primary"] {
         background-color: #ff4b4b !important;
         color: white !important;
         border: none !important;
-        font-size: 24px !important; /* Normal yazı boyutu */
+        font-size: 24px !important; /* Normal boyut */
         min-height: 60px !important;
+        padding-bottom: 0px !important;
     }
 
     /* Kırmızı Buton Hover */
@@ -267,7 +272,7 @@ with st.sidebar:
     
     # İMZA KISMI
     st.divider()
-    st.info("👨‍💻 Geliştirici: SERTAŞ BEDİR \n\n 📅 Versiyon: 1.1 (Game Mode)")
+    st.info("👨‍💻 Geliştirici: SERTAŞ BEDİR \n\n 📅 Versiyon: 1.2 (Mega Harfler)")
 
 
 # --- ANA EKRAN MANTIĞI ---
@@ -294,7 +299,7 @@ if mod == "📖 Çalışma Modu":
 
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("🔊 Tekrar Dinle", use_container_width=True): 
+            if st.button("🔊 Dinle", use_container_width=True): 
                 sesi_cal(mevcut['s'])
                 
         with c2:
@@ -331,7 +336,8 @@ else:
         sesi_cal(hedef['s'])
 
     # Sesi Tekrar Çal Butonu
-    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True):
+    # Bu butona özel stil veriyoruz ki devasa olmasın
+    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True, type="primary"):
         sesi_cal(st.session_state.quiz_hedef['s'])
 
     st.write("") # Boşluk
@@ -344,11 +350,11 @@ else:
             if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
                 if secenek == st.session_state.quiz_hedef:
                     st.balloons()
-                    st.success("✅ DOĞRU CEVAP!")
+                    st.success("✅ DOĞRU!")
                     st.session_state.puan += 20
                     time.sleep(1) # Kutlama süresi
                     st.session_state.quiz_hedef = None # Yeni soru için sıfırla
                     st.rerun()
                 else:
-                    st.error("❌ Yanlış, tekrar dene!")
+                    st.error("❌ Yanlış!")
                     st.session_state.puan = max(0, st.session_state.puan - 5)
