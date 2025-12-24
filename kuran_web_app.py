@@ -42,7 +42,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (8 Seviye - İki Esre Dahil) ---
+# --- 3. MÜFREDAT (Tam 9 Seviye) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -119,6 +119,15 @@ mufredat = {
         {"h": "ظٍ", "s": "zi_p_tenvin_esre"}, {"h": "عٍ", "s": "ayin_tenvin_esre"}, {"h": "غٍ", "s": "gayin_tenvin_esre"}, {"h": "فٍ", "s": "fe_tenvin_esre"},
         {"h": "قٍ", "s": "kaf_tenvin_esre"}, {"h": "كٍ", "s": "kef_tenvin_esre"}, {"h": "لٍ", "s": "lam_tenvin_esre"}, {"h": "مٍ", "s": "mim_tenvin_esre"},
         {"h": "نٍ", "s": "nun_tenvin_esre"}, {"h": "وٍ", "s": "vav_tenvin_esre"}, {"h": "هٍ", "s": "he_tenvin_esre"}, {"h": "يٍ", "s": "ye_tenvin_esre"}
+    ],
+    "9. Tenvin (İki Ötre - Ün/Un)": [
+        {"h": "اٌ", "s": "elif_tenvin_otre"}, {"h": "بٌ", "s": "be_tenvin_otre"}, {"h": "تٌ", "s": "te_tenvin_otre"}, {"h": "ثٌ", "s": "se_p_tenvin_otre"},
+        {"h": "جٌ", "s": "cim_tenvin_otre"}, {"h": "حٌ", "s": "ha_tenvin_otre"}, {"h": "خٌ", "s": "hi_tenvin_otre"}, {"h": "دٌ", "s": "dal_tenvin_otre"},
+        {"h": "ذٌ", "s": "zel_p_tenvin_otre"}, {"h": "رٌ", "s": "ra_tenvin_otre"}, {"h": "زٌ", "s": "ze_tenvin_otre"}, {"h": "سٌ", "s": "sin_tenvin_otre"},
+        {"h": "شٌ", "s": "sin_n_tenvin_otre"}, {"h": "صٌ", "s": "sad_tenvin_otre"}, {"h": "ضٌ", "s": "dad_tenvin_otre"}, {"h": "طٌ", "s": "ti_tenvin_otre"},
+        {"h": "ظٌ", "s": "zi_p_tenvin_otre"}, {"h": "عٌ", "s": "ayin_tenvin_otre"}, {"h": "غٌ", "s": "gayin_tenvin_otre"}, {"h": "فٌ", "s": "fe_tenvin_otre"},
+        {"h": "قٌ", "s": "kaf_tenvin_otre"}, {"h": "كٌ", "s": "kef_tenvin_otre"}, {"h": "لٌ", "s": "lam_tenvin_otre"}, {"h": "مٌ", "s": "mim_tenvin_otre"},
+        {"h": "نٌ", "s": "nun_tenvin_otre"}, {"h": "وٌ", "s": "vav_tenvin_otre"}, {"h": "هٌ", "s": "he_tenvin_otre"}, {"h": "يٌ", "s": "ye_tenvin_otre"}
     ]
 }
 
@@ -127,6 +136,7 @@ with st.sidebar:
     st.title("🌙 Akademi Paneli")
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     
+    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
