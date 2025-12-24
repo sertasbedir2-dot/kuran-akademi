@@ -42,7 +42,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (Tam Uyumlu Liste) ---
+# --- 3. TAM MÜFREDAT (6 Seviye - Şedde Dahil) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -54,8 +54,7 @@ mufredat = {
         {"h": "ن", "s": "nun"}, {"h": "و", "s": "vav"}, {"h": "ه", "s": "he"}, {"h": "ي", "s": "ye"}
     ],
     "2. Üstün (E-A)": [
-        {"h": "اَ", "s": "e"}, 
-        {"h": "بَ", "s": "be_ustun"}, {"h": "تَ", "s": "te_ustun"}, {"h": "ثَ", "s": "se_ustun"},
+        {"h": "اَ", "s": "e"}, {"h": "بَ", "s": "be_ustun"}, {"h": "تَ", "s": "te_ustun"}, {"h": "ثَ", "s": "se_ustun"},
         {"h": "جَ", "s": "cim_ustun"}, {"h": "حَ", "s": "ha_ustun"}, {"h": "خَ", "s": "hi_ustun"}, {"h": "دَ", "s": "dal_ustun"},
         {"h": "ذَ", "s": "zel_ustun"}, {"h": "رَ", "s": "re_ustun"}, {"h": "زَ", "s": "ze_ustun"}, {"h": "سَ", "s": "sin_ustun"},
         {"h": "شَ", "s": "sin_noktali_ustun"}, {"h": "صَ", "s": "sad_ustun"}, {"h": "ضَ", "s": "dad_ustun"}, {"h": "طَ", "s": "ti_ustun"},
@@ -64,8 +63,7 @@ mufredat = {
         {"h": "نَ", "s": "nun_ustun"}, {"h": "وَ", "s": "vav_ustun"}, {"h": "هَ", "s": "he_ustun"}, {"h": "يَ", "s": "ye_ustun"}
     ],
     "3. Esre (İ-I)": [
-        {"h": "اِ", "s": "i_ince"}, 
-        {"h": "بِ", "s": "be_esre"}, {"h": "تِ", "s": "te_esre"}, {"h": "ثِ", "s": "se_esre"},
+        {"h": "اِ", "s": "i_ince"}, {"h": "بِ", "s": "be_esre"}, {"h": "تِ", "s": "te_esre"}, {"h": "ثِ", "s": "se_esre"},
         {"h": "جِ", "s": "cim_esre"}, {"h": "حِ", "s": "ha_esre"}, {"h": "خِ", "s": "hi_esre"}, {"h": "دِ", "s": "dal_esre"},
         {"h": "ذِ", "s": "zel_esre"}, {"h": "رِ", "s": "re_esre"}, {"h": "زِ", "s": "ze_esre"}, {"h": "سِ", "s": "sin_esre"},
         {"h": "شِ", "s": "sin_noktali_esre"}, {"h": "صِ", "s": "sad_esre"}, {"h": "ضِ", "s": "dad_esre"}, {"h": "طِ", "s": "ti_esre"},
@@ -74,8 +72,7 @@ mufredat = {
         {"h": "نِ", "s": "nun_esre"}, {"h": "وِ", "s": "vav_esre"}, {"h": "هِ", "s": "he_esre"}, {"h": "يِ", "s": "ye_esre"}
     ],
     "4. Ötre (Ü-U)": [
-        {"h": "اُ", "s": "u_otre"}, 
-        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "se_otre"},
+        {"h": "اُ", "s": "u_otre"}, {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "se_otre"},
         {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
         {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
         {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
@@ -93,6 +90,17 @@ mufredat = {
         {"h": "اَفْ", "s": "ef_cezm"}, {"h": "اَقْ", "s": "ek_kaf_cezm"}, {"h": "اَكْ", "s": "ek_kef_cezm"},
         {"h": "اَلْ", "s": "el_cezm"}, {"h": "اَمْ", "s": "em_cezm"}, {"h": "اَنْ", "s": "en_cezm"},
         {"h": "اَوْ", "s": "ev_cezm"}, {"h": "اَهْ", "s": "eh_he_cezm"}, {"h": "اَىْ", "s": "ey_cezm"}
+    ],
+    "6. Şedde (Çift Okuma)": [
+        {"h": "اَبَّ", "s": "eb_be_sedde"}, {"h": "اَتَّ", "s": "et_te_sedde"}, {"h": "اَثَّ", "s": "es_se_p_sedde"},
+        {"h": "اَجَّ", "s": "ec_ce_sedde"}, {"h": "اَحَّ", "s": "eh_ha_sedde"}, {"h": "اَخَّ", "s": "eh_hi_sedde"},
+        {"h": "اَدَّ", "s": "ed_de_sedde"}, {"h": "اَذَّ", "s": "ez_zel_sedde"}, {"h": "اَرَّ", "s": "er_ra_sedde"},
+        {"h": "اَزَّ", "s": "ez_ze_sedde"}, {"h": "اَسَّ", "s": "es_se_sedde"}, {"h": "اَشَّ", "s": "es_sa_sedde"},
+        {"h": "اَصَّ", "s": "es_sad_sedde"}, {"h": "اَضَّ", "s": "ed_dad_sedde"}, {"h": "اَطَّ", "s": "et_ti_sedde"},
+        {"h": "اَظَّ", "s": "ez_zi_sedde"}, {"h": "اَعَّ", "s": "ea_ayin_sedde"}, {"h": "اَغَّ", "s": "eg_gayin_sedde"},
+        {"h": "اَفَّ", "s": "ef_fe_sedde"}, {"h": "اَقَّ", "s": "ek_kaf_sedde"}, {"h": "اَكَّ", "s": "ek_kef_sedde"},
+        {"h": "اَلَّ", "s": "el_lam_sedde"}, {"h": "اَمَّ", "s": "em_mim_sedde"}, {"h": "اَنَّ", "s": "en_nun_sedde"},
+        {"h": "اَوَّ", "s": "ev_vav_sedde"}, {"h": "اَهَّ", "s": "eh_he_sedde"}, {"h": "اَيَّ", "s": "ey_ye_sedde"}
     ]
 }
 
@@ -101,11 +109,11 @@ with st.sidebar:
     st.title("🌙 Akademi Paneli")
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     
+    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
-        # Test modundan çıkınca listeyi temizle
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
@@ -141,7 +149,6 @@ if st.session_state.alt_adim < len(liste):
     
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
-    # --- SES ÇALMA (Test modunda da otomatik çalsın) ---
     ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
     if st.session_state.calindi != ident:
         sesi_cal(mevcut['s'])
