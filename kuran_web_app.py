@@ -75,7 +75,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Ses Dosyası Eksik: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (9 Seviye Tam Liste) ---
+# --- 3. MÜFREDAT (10 Seviye Tam Liste) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -161,6 +161,15 @@ mufredat = {
         {"h": "ظٌ", "s": "zi_p_tenvin_otre"}, {"h": "عٌ", "s": "ayin_tenvin_otre"}, {"h": "غٌ", "s": "gayin_tenvin_otre"}, {"h": "فٌ", "s": "fe_tenvin_otre"},
         {"h": "قٌ", "s": "kaf_tenvin_otre"}, {"h": "كٌ", "s": "kef_tenvin_otre"}, {"h": "لٌ", "s": "lam_tenvin_otre"}, {"h": "مٌ", "s": "mim_tenvin_otre"},
         {"h": "نٌ", "s": "nun_tenvin_otre"}, {"h": "وٌ", "s": "vav_tenvin_otre"}, {"h": "هٌ", "s": "he_tenvin_otre"}, {"h": "يٌ", "s": "ye_tenvin_otre"}
+    ],
+    "10. Med Harfi Elif (Uzatma)": [
+        {"h": "اَا", "s": "elif_med"}, {"h": "بَا", "s": "be_med"}, {"h": "تَا", "s": "te_med"}, {"h": "ثَا", "s": "se_p_med"},
+        {"h": "جَا", "s": "cim_med"}, {"h": "حَا", "s": "ha_med"}, {"h": "خَا", "s": "hi_med"}, {"h": "دَا", "s": "dal_med"},
+        {"h": "ذَا", "s": "zel_p_med"}, {"h": "رَا", "s": "ra_med"}, {"h": "زَا", "s": "ze_med"}, {"h": "سَا", "s": "sin_med"},
+        {"h": "شَا", "s": "sin_n_med"}, {"h": "صَا", "s": "sad_med"}, {"h": "ضَا", "s": "dad_med"}, {"h": "طَا", "s": "ti_med"},
+        {"h": "ظَا", "s": "zi_p_med"}, {"h": "عَا", "s": "ayin_med"}, {"h": "غَا", "s": "gayin_med"}, {"h": "فَا", "s": "fe_med"},
+        {"h": "قَا", "s": "kaf_med"}, {"h": "كَا", "s": "kef_med"}, {"h": "لَا", "s": "lam_med"}, {"h": "مَا", "s": "mim_med"},
+        {"h": "نَا", "s": "nun_med"}, {"h": "وَا", "s": "vav_med"}, {"h": "هَا", "s": "he_med"}, {"h": "يَا", "s": "ye_med"}
     ]
 }
 
