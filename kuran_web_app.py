@@ -42,7 +42,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (Dosyalarla Uyumlu) ---
+# --- 3. MÜFREDAT (Tam Uyumlu Liste) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -75,13 +75,24 @@ mufredat = {
     ],
     "4. Ötre (Ü-U)": [
         {"h": "اُ", "s": "u_otre"}, 
-        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "su_p_otre"},
+        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "se_otre"},
         {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
         {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
         {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
         {"h": "ظُ", "s": "zi_otre"}, {"h": "عُ", "s": "ayin_otre"}, {"h": "غُ", "s": "gayin_otre"}, {"h": "فُ", "s": "fe_otre"},
         {"h": "قُ", "s": "kaf_otre"}, {"h": "كُ", "s": "kef_otre"}, {"h": "لُ", "s": "lam_otre"}, {"h": "مُ", "s": "mim_otre"},
         {"h": "نُ", "s": "nun_otre"}, {"h": "وُ", "s": "vav_otre"}, {"h": "هُ", "s": "he_otre"}, {"h": "يُ", "s": "ye_otre"}
+    ],
+    "5. Cezm (Birleştirme)": [
+        {"h": "اَبْ", "s": "eb_cezm"}, {"h": "اَتْ", "s": "et_cezm"}, {"h": "اَثْ", "s": "es_p_cezm"},
+        {"h": "اَجْ", "s": "ec_cezm"}, {"h": "اَحْ", "s": "eh_cezm"}, {"h": "اَخْ", "s": "eh_k_cezm"},
+        {"h": "اَدْ", "s": "ed_cezm"}, {"h": "اَذْ", "s": "ez_p_cezm"}, {"h": "اَرْ", "s": "er_cezm"},
+        {"h": "اَزْ", "s": "ez_cezm"}, {"h": "اَسْ", "s": "es_cezm"}, {"h": "اَشْ", "s": "es_sh_cezm"},
+        {"h": "اَصْ", "s": "es_sad_cezm"}, {"h": "اَضْ", "s": "ed_dad_cezm"}, {"h": "اَطْ", "s": "et_ti_cezm"},
+        {"h": "اَظْ", "s": "ez_zi_cezm"}, {"h": "اَعْ", "s": "ea_cezm"}, {"h": "اَغْ", "s": "eg_cezm"},
+        {"h": "اَفْ", "s": "ef_cezm"}, {"h": "اَقْ", "s": "ek_kaf_cezm"}, {"h": "اَكْ", "s": "ek_kef_cezm"},
+        {"h": "اَلْ", "s": "el_cezm"}, {"h": "اَمْ", "s": "em_cezm"}, {"h": "اَنْ", "s": "en_cezm"},
+        {"h": "اَوْ", "s": "ev_cezm"}, {"h": "اَهْ", "s": "eh_he_cezm"}, {"h": "اَىْ", "s": "ey_cezm"}
     ]
 }
 
@@ -90,12 +101,11 @@ with st.sidebar:
     st.title("🌙 Akademi Paneli")
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     
-    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
-        # Test listesini temizle
+        # Test modundan çıkınca listeyi temizle
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
@@ -131,7 +141,7 @@ if st.session_state.alt_adim < len(liste):
     
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
-    # --- DEĞİŞİKLİK BURADA: Her durumda otomatik çal ---
+    # --- SES ÇALMA (Test modunda da otomatik çalsın) ---
     ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
     if st.session_state.calindi != ident:
         sesi_cal(mevcut['s'])
