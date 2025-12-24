@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ) ---
+# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ: BÜYÜK HARFLER) ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -13,7 +13,7 @@ st.markdown("""
         background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
-    /* Arapça Harf Kutusu */
+    /* Arapça Harf Kutusu (Çalışma Modu) */
     .arapca-kutu {
         text-align: center; 
         font-size: 180px; 
@@ -34,51 +34,56 @@ st.markdown("""
         box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
     }
 
-    /* --- BUTON TASARIMLARI (DÜZELTİLEN KISIM) --- */
+    /* --- BUTON TASARIMLARI (BÜYÜTÜLDÜ) --- */
 
     /* 1. Normal Butonlar (Tekrar Dinle, Seçenekler) */
     .stButton > button {
         font-family: 'Amiri', serif !important;
-        font-size: 30px !important;
+        font-size: 55px !important; /* Yazı boyutu büyütüldü (30px -> 55px) */
         font-weight: bold;
-        padding: 15px;
-        border-radius: 15px;
-        border: 2px solid #d4af37;
+        padding: 10px;
+        min-height: 110px; /* Buton yüksekliği artırıldı */
+        border-radius: 20px;
+        border: 3px solid #d4af37;
         background-color: white;
-        color: black;
+        color: #2c3e50;
         transition: 0.2s;
+        line-height: 1.5 !important; /* Yazıyı ortalamak için */
     }
     
     /* Üzerine gelince (Hover) */
     .stButton > button:hover {
         background-color: #fcf3cf; /* Sarı */
         border-color: #b7950b;
-        transform: scale(1.02);
+        transform: scale(1.03);
     }
 
-    /* Tıklanıp bırakılınca (Focus) - RENGİN TAKILMASINI BU ENGELLER */
+    /* Tıklanıp bırakılınca (Focus) */
     .stButton > button:focus:not(:active) {
         background-color: white !important;
         border-color: #d4af37 !important;
-        color: black !important;
+        color: #2c3e50 !important;
         box-shadow: none !important;
     }
 
     /* 2. Kırmızı (Primary) Buton (Sonraki Harf) */
+    /* Bu butonun çok devasa olmaması için fontunu biraz kısıyoruz */
     .stButton > button[kind="primary"] {
         background-color: #ff4b4b !important;
         color: white !important;
         border: none !important;
+        font-size: 24px !important; /* Normal yazı boyutu */
+        min-height: 60px !important;
     }
 
     /* Kırmızı Buton Hover */
     .stButton > button[kind="primary"]:hover {
-        background-color: #ff3333 !important; /* Daha koyu kırmızı */
+        background-color: #ff3333 !important;
         transform: scale(1.05);
         box-shadow: 0 5px 15px rgba(255, 75, 75, 0.4);
     }
 
-    /* Kırmızı Buton Focus - TAKILMAYI ENGELLER */
+    /* Kırmızı Buton Focus */
     .stButton > button[kind="primary"]:focus:not(:active) {
         background-color: #ff4b4b !important;
         color: white !important;
@@ -113,7 +118,6 @@ def sesi_cal(dosya_adi):
             unique_timestamp = int(time.time() * 1000)
             st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
-        # Ses dosyası yoksa uyarı verme
         pass
 
 # --- 3. MÜFREDAT ---
