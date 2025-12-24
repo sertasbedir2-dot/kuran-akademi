@@ -228,7 +228,7 @@ with st.sidebar:
     
     # İMZA KISMI
     st.divider()
-    st.info("👨‍💻 Geliştirici: BURAYA ADINI YAZ \n\n 📅 Versiyon: 1.1 (Game Mode)")
+    st.info("👨‍💻 Geliştirici: SERTAŞ BEDİR \n\n 📅 Versiyon: 1.1 (Game Mode)")
 
 
 # --- ANA EKRAN MANTIĞI ---
@@ -314,6 +314,4 @@ else:
                     st.error("❌ Yanlış, tekrar dene!")
                     st.session_state.puan = max(0, st.session_state.puan - 5)
 
-# --- İMZA KISMI (EN ALTA EKLE) ---
-st.sidebar.divider()
-st.sidebar.info("👨‍💻 Geliştirici: Sertaş Bedir \n\n 📅 Versiyon: 1.0 Gold")
+
