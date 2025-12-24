@@ -49,7 +49,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"🔈 Ses dosyası bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (GitHub Dosya İsimlerinize Göre %100 Uyumlu) ---
+# --- 3. TAM MÜFREDAT (GitHub Dosya İsimlerinize %100 Uyumlu) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -144,5 +144,6 @@ else:
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
         st.rerun()
+
 
 
