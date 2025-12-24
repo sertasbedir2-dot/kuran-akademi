@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE GOLD TASARIM ---
+# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ) ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -13,7 +13,7 @@ st.markdown("""
         background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
-    /* Arapça Harf Kutusu (Çalışma Modu) */
+    /* Arapça Harf Kutusu */
     .arapca-kutu {
         text-align: center; 
         font-size: 180px; 
@@ -34,20 +34,55 @@ st.markdown("""
         box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
     }
 
-    /* Sınav Modu Butonları İçin Stil */
-    .stButton button {
+    /* --- BUTON TASARIMLARI (DÜZELTİLEN KISIM) --- */
+
+    /* 1. Normal Butonlar (Tekrar Dinle, Seçenekler) */
+    .stButton > button {
         font-family: 'Amiri', serif !important;
-        font-size: 40px !important;
+        font-size: 30px !important;
         font-weight: bold;
-        padding: 20px;
+        padding: 15px;
         border-radius: 15px;
         border: 2px solid #d4af37;
-        transition: 0.3s;
+        background-color: white;
+        color: black;
+        transition: 0.2s;
     }
-    .stButton button:hover {
-        background-color: #fcf3cf;
+    
+    /* Üzerine gelince (Hover) */
+    .stButton > button:hover {
+        background-color: #fcf3cf; /* Sarı */
         border-color: #b7950b;
+        transform: scale(1.02);
+    }
+
+    /* Tıklanıp bırakılınca (Focus) - RENGİN TAKILMASINI BU ENGELLER */
+    .stButton > button:focus:not(:active) {
+        background-color: white !important;
+        border-color: #d4af37 !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+
+    /* 2. Kırmızı (Primary) Buton (Sonraki Harf) */
+    .stButton > button[kind="primary"] {
+        background-color: #ff4b4b !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    /* Kırmızı Buton Hover */
+    .stButton > button[kind="primary"]:hover {
+        background-color: #ff3333 !important; /* Daha koyu kırmızı */
         transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(255, 75, 75, 0.4);
+    }
+
+    /* Kırmızı Buton Focus - TAKILMAYI ENGELLER */
+    .stButton > button[kind="primary"]:focus:not(:active) {
+        background-color: #ff4b4b !important;
+        color: white !important;
+        box-shadow: none !important;
     }
 
     /* İlerleme Çubuğu Rengi */
@@ -78,10 +113,9 @@ def sesi_cal(dosya_adi):
             unique_timestamp = int(time.time() * 1000)
             st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
-        # Ses dosyası yoksa uyarı verme (Quiz akışını bozmamak için)
         pass
 
-# --- 3. MÜFREDAT (12 Seviye - Full Paket) ---
+# --- 3. MÜFREDAT ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -256,61 +290,4 @@ if mod == "📖 Çalışma Modu":
         c1, c2 = st.columns(2)
         with c1:
             if st.button("🔊 Tekrar Dinle", use_container_width=True): 
-                sesi_cal(mevcut['s'])
-                
-        with c2:
-            if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
-                st.session_state.alt_adim += 1
-                st.session_state.puan += 5 # Çalışma puanı
-                st.rerun()
-    else:
-        st.balloons()
-        st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
-        if st.button("🔄 Başa Dön", use_container_width=True):
-            st.session_state.alt_adim = 0
-            st.rerun()
-
-# ================================
-# MOD 2: SINAV MODU (QUIZ OYUNU)
-# ================================
-else:
-    st.subheader(f"🎮 Sesi Bul: {st.session_state.bolum}")
-    st.info("🔊 Sesi dinle ve doğru harfi bul!")
-    
-    # Yeni soru oluştur (Eğer hedef yoksa)
-    if st.session_state.quiz_hedef is None:
-        hedef = random.choice(ders_listesi)
-        # Yanlış seçenekler (Kendisi hariç 2 tane)
-        yanlislar = random.sample([x for x in ders_listesi if x != hedef], 2)
-        secenekler = [hedef] + yanlislar
-        random.shuffle(secenekler)
-        
-        st.session_state.quiz_hedef = hedef
-        st.session_state.quiz_secenekler = secenekler
-        
-        # Sesi Çal
-        sesi_cal(hedef['s'])
-
-    # Sesi Tekrar Çal Butonu
-    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True):
-        sesi_cal(st.session_state.quiz_hedef['s'])
-
-    st.write("") # Boşluk
-
-    # Seçenekleri Göster (3 Buton Yan Yana)
-    cols = st.columns(3)
-    for i, secenek in enumerate(st.session_state.quiz_secenekler):
-        with cols[i]:
-            # Butona basılınca kontrol et
-            if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
-                if secenek == st.session_state.quiz_hedef:
-                    st.balloons()
-                    st.success("✅ DOĞRU CEVAP!")
-                    st.session_state.puan += 20
-                    time.sleep(1) # Kutlama süresi
-                    st.session_state.quiz_hedef = None # Yeni soru için sıfırla
-                    st.rerun()
-                else:
-                    st.error("❌ Yanlış, tekrar dene!")
-                    st.session_state.puan = max(0, st.session_state.puan - 5)
-
+                ses
