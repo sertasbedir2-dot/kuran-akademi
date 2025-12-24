@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE PROFESYONEL TASARIM ---
+# --- 1. AYARLAR VE GOLD TASARIM ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -10,7 +10,7 @@ st.markdown("""
     
     /* Ana Arka Plan */
     .stApp {
-        background: linear-gradient(to bottom, #f0f8ff, #e6e9f0);
+        background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
     /* Arapça Harf Kutusu */
@@ -75,7 +75,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Ses Dosyası Eksik: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (10 Seviye Tam Liste) ---
+# --- 3. MÜFREDAT (12 Seviye - Full Paket) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -170,6 +170,24 @@ mufredat = {
         {"h": "ظَا", "s": "zi_p_med"}, {"h": "عَا", "s": "ayin_med"}, {"h": "غَا", "s": "gayin_med"}, {"h": "فَا", "s": "fe_med"},
         {"h": "قَا", "s": "kaf_med"}, {"h": "كَا", "s": "kef_med"}, {"h": "لَا", "s": "lam_med"}, {"h": "مَا", "s": "mim_med"},
         {"h": "نَا", "s": "nun_med"}, {"h": "وَا", "s": "vav_med"}, {"h": "هَا", "s": "he_med"}, {"h": "يَا", "s": "ye_med"}
+    ],
+    "11. Med Harfi Ye (İnce Uzatma)": [
+        {"h": "اِي", "s": "elif_med_ye"}, {"h": "بِي", "s": "be_med_ye"}, {"h": "تِي", "s": "te_med_ye"}, {"h": "ثِي", "s": "se_p_med_ye"},
+        {"h": "جِي", "s": "cim_med_ye"}, {"h": "حِي", "s": "ha_med_ye"}, {"h": "خِي", "s": "hi_med_ye"}, {"h": "دِي", "s": "dal_med_ye"},
+        {"h": "ذِي", "s": "zel_p_med_ye"}, {"h": "رِي", "s": "ra_med_ye"}, {"h": "زِي", "s": "ze_med_ye"}, {"h": "سِي", "s": "sin_med_ye"},
+        {"h": "شِي", "s": "sin_n_med_ye"}, {"h": "صِي", "s": "sad_med_ye"}, {"h": "ضِي", "s": "dad_med_ye"}, {"h": "طِي", "s": "ti_med_ye"},
+        {"h": "ظِي", "s": "zi_p_med_ye"}, {"h": "عِي", "s": "ayin_med_ye"}, {"h": "غِي", "s": "gayin_med_ye"}, {"h": "فِي", "s": "fe_med_ye"},
+        {"h": "قِي", "s": "kaf_med_ye"}, {"h": "كِي", "s": "kef_med_ye"}, {"h": "لِي", "s": "lam_med_ye"}, {"h": "مِي", "s": "mim_med_ye"},
+        {"h": "نِي", "s": "nun_med_ye"}, {"h": "وِي", "s": "vav_med_ye"}, {"h": "هِي", "s": "he_med_ye"}, {"h": "يِي", "s": "ye_med_ye"}
+    ],
+    "12. Med Harfi Vav (Ötreli Uzatma)": [
+        {"h": "اُو", "s": "elif_med_vav"}, {"h": "بُو", "s": "be_med_vav"}, {"h": "تُو", "s": "te_med_vav"}, {"h": "ثُو", "s": "se_p_med_vav"},
+        {"h": "جُو", "s": "cim_med_vav"}, {"h": "حُو", "s": "ha_med_vav"}, {"h": "خُو", "s": "hi_med_vav"}, {"h": "دُو", "s": "dal_med_vav"},
+        {"h": "ذُو", "s": "zel_p_med_vav"}, {"h": "رُو", "s": "ra_med_vav"}, {"h": "زُو", "s": "ze_med_vav"}, {"h": "سُو", "s": "sin_med_vav"},
+        {"h": "شُو", "s": "sin_n_med_vav"}, {"h": "صُو", "s": "sad_med_vav"}, {"h": "ضُو", "s": "dad_med_vav"}, {"h": "طُو", "s": "ti_med_vav"},
+        {"h": "ظُو", "s": "zi_p_med_vav"}, {"h": "عُو", "s": "ayin_med_vav"}, {"h": "غُو", "s": "gayin_med_vav"}, {"h": "فُو", "s": "fe_med_vav"},
+        {"h": "قُو", "s": "kaf_med_vav"}, {"h": "كُو", "s": "kef_med_vav"}, {"h": "لُو", "s": "lam_med_vav"}, {"h": "مُو", "s": "mim_med_vav"},
+        {"h": "نُو", "s": "nun_med_vav"}, {"h": "وُو", "s": "vav_med_vav"}, {"h": "هُو", "s": "he_med_vav"}, {"h": "يُو", "s": "ye_med_vav"}
     ]
 }
 
