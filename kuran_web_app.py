@@ -49,7 +49,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"🔈 Ses dosyası bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (GitHub'daki Mevcut Dosya İsimlerinize Göre Düzenlendi) ---
+# --- 3. TAM MÜFREDAT (GitHub Dosya İsimlerinize Göre %100 Uyumlu) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -61,31 +61,31 @@ mufredat = {
         {"h": "ن", "s": "nun"}, {"h": "و", "s": "vav"}, {"h": "ه", "s": "he"}, {"h": "ي", "s": "ye"}
     ],
     "2. Üstün (E-A)": [
-        {"h": "اَ", "s": "e"}, {"h": "بَ", "s": "be_ust"}, {"h": "تَ", "s": "te_ust"}, {"h": "ثَ", "s": "se_ust"},
-        {"h": "جَ", "s": "ce"}, {"h": "حَ", "s": "ha_ust"}, {"h": "خَ", "s": "ha_k"}, {"h": "دَ", "s": "de"},
-        {"h": "ذَ", "s": "zel_ust"}, {"h": "رَ", "s": "ra"}, {"h": "زَ", "s": "ze_ust"}, {"h": "سَ", "s": "se_u2"},
-        {"h": "شَ", "s": "sin_n_ust"}, {"h": "صَ", "s": "sa"}, {"h": "ضَ", "s": "da"}, {"h": "طَ", "s": "ta"},
-        {"h": "ظَ", "s": "za"}, {"h": "عَ", "s": "ayin_ust"}, {"h": "غَ", "s": "ga"}, {"h": "فَ", "s": "fe_ust"},
-        {"h": "قَ", "s": "ka"}, {"h": "كَ", "s": "ke"}, {"h": "لَ", "s": "le"}, {"h": "مَ", "s": "me"},
-        {"h": "نَ", "s": "ne"}, {"h": "وَ", "s": "ve"}, {"h": "هَ", "s": "he_ust"}, {"h": "يَ", "s": "ye_ust"}
+        {"h": "اَ", "s": "e"}, {"h": "بَ", "s": "be_ustun"}, {"h": "تَ", "s": "te_ustun"}, {"h": "ثَ", "s": "se_ustun"},
+        {"h": "جَ", "s": "cim_ustun"}, {"h": "حَ", "s": "ha_ustun"}, {"h": "خَ", "s": "hi_ustun"}, {"h": "دَ", "s": "dal_ustun"},
+        {"h": "ذَ", "s": "zel_ustun"}, {"h": "رَ", "s": "re_ustun"}, {"h": "زَ", "s": "ze_ustun"}, {"h": "سَ", "s": "sin_ustun"},
+        {"h": "شَ", "s": "sin_noktali_ustun"}, {"h": "صَ", "s": "sad_ustun"}, {"h": "ضَ", "s": "dad_ustun"}, {"h": "طَ", "s": "ti_ustun"},
+        {"h": "ظَ", "s": "zi_ustun"}, {"h": "عَ", "s": "ayin_ustun"}, {"h": "غَ", "s": "gayin_ustun"}, {"h": "فَ", "s": "fe_ustun"},
+        {"h": "قَ", "s": "kaf_ustun"}, {"h": "كَ", "s": "kef_ustun"}, {"h": "لَ", "s": "lam_ustun"}, {"h": "مَ", "s": "mim_ustun"},
+        {"h": "نَ", "s": "nun_ustun"}, {"h": "وَ", "s": "vav_ustun"}, {"h": "هَ", "s": "he_ustun"}, {"h": "يَ", "s": "ye_ustun"}
     ],
     "3. Esre (İ-I)": [
-        {"h": "اِ", "s": "i_ince"}, {"h": "بِ", "s": "bi_esre"}, {"h": "تِ", "s": "ti_esre"}, {"h": "ثِ", "s": "si_p_esre"},
-        {"h": "جِ", "s": "ci_esre"}, {"h": "حِ", "s": "hi_esre"}, {"h": "خِ", "s": "khi_esre"}, {"h": "دِ", "s": "di_esre"},
-        {"h": "ذِ", "s": "zi_p_esre"}, {"h": "رِ", "s": "ri_esre"}, {"h": "زِ", "s": "zi_esre"}, {"h": "سِ", "s": "si_esre"},
-        {"h": "شِ", "s": "shi_esre"}, {"h": "صِ", "s": "si_k_esre"}, {"h": "ضِ", "s": "di_k_esre"}, {"h": "طِ", "s": "ti_k_esre"},
-        {"h": "ظِ", "s": "zi_k_esre"}, {"h": "عِ", "s": "i_u_esre"}, {"h": "غِ", "s": "gi_esre"}, {"h": "فِ", "s": "fi_esre"},
-        {"h": "قِ", "s": "ki_k_esre"}, {"h": "كِ", "s": "ki_esre"}, {"h": "لِ", "s": "li_esre"}, {"h": "مِ", "s": "mi_esre"},
-        {"h": "نِ", "s": "ni_esre"}, {"h": "وِ", "s": "vi_esre"}, {"h": "هِ", "s": "hi_u2_esre"}, {"h": "يِ", "s": "yi_esre"}
+        {"h": "اِ", "s": "i_ince"}, {"h": "بِ", "s": "be_esre"}, {"h": "تِ", "s": "te_esre"}, {"h": "ثِ", "s": "se_esre"},
+        {"h": "جِ", "s": "cim_esre"}, {"h": "حِ", "s": "ha_esre"}, {"h": "خِ", "s": "hi_esre"}, {"h": "دِ", "s": "dal_esre"},
+        {"h": "ذِ", "s": "zel_esre"}, {"h": "رِ", "s": "re_esre"}, {"h": "زِ", "s": "ze_esre"}, {"h": "سِ", "s": "sin_esre"},
+        {"h": "شِ", "s": "sin_noktali_esre"}, {"h": "صِ", "s": "sad_esre"}, {"h": "ضِ", "s": "dad_esre"}, {"h": "طِ", "s": "ti_esre"},
+        {"h": "ظِ", "s": "zi_esre"}, {"h": "عِ", "s": "ayin_esre"}, {"h": "غِ", "s": "gayin_esre"}, {"h": "فِ", "s": "fe_esre"},
+        {"h": "قِ", "s": "kaf_esre"}, {"h": "كِ", "s": "kef_esre"}, {"h": "لِ", "s": "lam_esre"}, {"h": "مِ", "s": "mim_esre"},
+        {"h": "نِ", "s": "nun_esre"}, {"h": "وِ", "s": "vav_esre"}, {"h": "هِ", "s": "he_esre"}, {"h": "يِ", "s": "ye_esre"}
     ],
     "4. Ötre (Ü-U)": [
-        {"h": "اُ", "s": "u_otre"}, {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "su_p_otre"},
-        {"h": "جُ", "s": "cu_otre"}, {"h": "حُ", "s": "hu_u_otre"}, {"h": "خُ", "s": "hu_k_otre"}, {"h": "دُ", "s": "du_otre"},
-        {"h": "ذُ", "s": "zu_p_otre"}, {"h": "رُ", "s": "ru_otre"}, {"h": "زُ", "s": "zu_otre"}, {"h": "سُ", "s": "su_otre"},
-        {"h": "شُ", "s": "shu_otre"}, {"h": "صُ", "s": "su_k_otre"}, {"h": "ضُ", "s": "du_k_otre"}, {"h": "طُ", "s": "tu_k_otre"},
-        {"h": "ظُ", "s": "zu_k_otre"}, {"h": "عُ", "s": "u_u_otre"}, {"h": "غُ", "s": "gu_otre"}, {"h": "فُ", "s": "fu_otre"},
-        {"h": "قُ", "s": "ku_k_otre"}, {"h": "كُ", "s": "ku_otre"}, {"h": "لُ", "s": "lu_otre"}, {"h": "مُ", "s": "mu_otre"},
-        {"h": "نُ", "s": "nu_otre"}, {"h": "وُ", "s": "vu_otre"}, {"h": "هُ", "s": "hu_u2_otre"}, {"h": "يُ", "s": "yu_otre"}
+        {"h": "اُ", "s": "u_otre"}, {"h": "بُ", "s": "be_otre"}, {"h": "تُ", "s": "te_otre"}, {"h": "ثُ", "s": "se_otre"},
+        {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
+        {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
+        {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
+        {"h": "ظُ", "s": "zi_otre"}, {"h": "عُ", "s": "ayin_otre"}, {"h": "غُ", "s": "gayin_otre"}, {"h": "فُ", "s": "fe_otre"},
+        {"h": "قُ", "s": "kaf_otre"}, {"h": "كُ", "s": "kef_otre"}, {"h": "لُ", "s": "lam_otre"}, {"h": "مُ", "s": "mim_otre"},
+        {"h": "نُ", "s": "nun_otre"}, {"h": "وُ", "s": "vav_otre"}, {"h": "هُ", "s": "he_otre"}, {"h": "يُ", "s": "ye_otre"}
     ]
 }
 
@@ -144,4 +144,5 @@ else:
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
         st.rerun()
+
 
