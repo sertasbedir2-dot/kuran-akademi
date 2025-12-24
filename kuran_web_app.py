@@ -42,7 +42,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (7 Seviye - Tenvin Dahil) ---
+# --- 3. MÜFREDAT (8 Seviye - İki Esre Dahil) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -110,6 +110,15 @@ mufredat = {
         {"h": "ظً", "s": "zi_p_tenvin"}, {"h": "عً", "s": "ayin_tenvin"}, {"h": "غً", "s": "gayin_tenvin"}, {"h": "فً", "s": "fe_tenvin"},
         {"h": "قً", "s": "kaf_tenvin"}, {"h": "كً", "s": "kef_tenvin"}, {"h": "لً", "s": "lam_tenvin"}, {"h": "مً", "s": "mim_tenvin"},
         {"h": "نً", "s": "nun_tenvin"}, {"h": "وً", "s": "vav_tenvin"}, {"h": "هً", "s": "he_tenvin"}, {"h": "يً", "s": "ye_tenvin"}
+    ],
+    "8. Tenvin (İki Esre - İn/In)": [
+        {"h": "اٍ", "s": "elif_tenvin_esre"}, {"h": "بٍ", "s": "be_tenvin_esre"}, {"h": "تٍ", "s": "te_tenvin_esre"}, {"h": "ثٍ", "s": "se_p_tenvin_esre"},
+        {"h": "جٍ", "s": "cim_tenvin_esre"}, {"h": "حٍ", "s": "ha_tenvin_esre"}, {"h": "خٍ", "s": "hi_tenvin_esre"}, {"h": "دٍ", "s": "dal_tenvin_esre"},
+        {"h": "ذٍ", "s": "zel_p_tenvin_esre"}, {"h": "رٍ", "s": "ra_tenvin_esre"}, {"h": "زٍ", "s": "ze_tenvin_esre"}, {"h": "سٍ", "s": "sin_tenvin_esre"},
+        {"h": "شٍ", "s": "sin_n_tenvin_esre"}, {"h": "صٍ", "s": "sad_tenvin_esre"}, {"h": "ضٍ", "s": "dad_tenvin_esre"}, {"h": "طٍ", "s": "ti_tenvin_esre"},
+        {"h": "ظٍ", "s": "zi_p_tenvin_esre"}, {"h": "عٍ", "s": "ayin_tenvin_esre"}, {"h": "غٍ", "s": "gayin_tenvin_esre"}, {"h": "فٍ", "s": "fe_tenvin_esre"},
+        {"h": "قٍ", "s": "kaf_tenvin_esre"}, {"h": "كٍ", "s": "kef_tenvin_esre"}, {"h": "لٍ", "s": "lam_tenvin_esre"}, {"h": "مٍ", "s": "mim_tenvin_esre"},
+        {"h": "نٍ", "s": "nun_tenvin_esre"}, {"h": "وٍ", "s": "vav_tenvin_esre"}, {"h": "هٍ", "s": "he_tenvin_esre"}, {"h": "يٍ", "s": "ye_tenvin_esre"}
     ]
 }
 
@@ -183,5 +192,3 @@ else:
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
-
- 
