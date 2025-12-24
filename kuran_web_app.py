@@ -42,7 +42,7 @@ def sesi_cal(dosya_adi):
     else:
         st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (6 Seviye - Şedde Dahil) ---
+# --- 3. MÜFREDAT (7 Seviye - Tenvin Dahil) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -101,6 +101,15 @@ mufredat = {
         {"h": "اَفَّ", "s": "ef_fe_sedde"}, {"h": "اَقَّ", "s": "ek_kaf_sedde"}, {"h": "اَكَّ", "s": "ek_kef_sedde"},
         {"h": "اَلَّ", "s": "el_lam_sedde"}, {"h": "اَمَّ", "s": "em_mim_sedde"}, {"h": "اَنَّ", "s": "en_nun_sedde"},
         {"h": "اَوَّ", "s": "ev_vav_sedde"}, {"h": "اَهَّ", "s": "eh_he_sedde"}, {"h": "اَيَّ", "s": "ey_ye_sedde"}
+    ],
+    "7. Tenvin (İki Üstün - En/An)": [
+        {"h": "اً", "s": "elif_tenvin"}, {"h": "بً", "s": "be_tenvin"}, {"h": "تً", "s": "te_tenvin"}, {"h": "ثً", "s": "se_p_tenvin"},
+        {"h": "جً", "s": "cim_tenvin"}, {"h": "حً", "s": "ha_tenvin"}, {"h": "خً", "s": "hi_tenvin"}, {"h": "دً", "s": "dal_tenvin"},
+        {"h": "ذً", "s": "zel_p_tenvin"}, {"h": "رً", "s": "ra_tenvin"}, {"h": "زً", "s": "ze_tenvin"}, {"h": "سً", "s": "sin_tenvin"},
+        {"h": "شً", "s": "sin_n_tenvin"}, {"h": "صً", "s": "sad_tenvin"}, {"h": "ضً", "s": "dad_tenvin"}, {"h": "طً", "s": "ti_tenvin"},
+        {"h": "ظً", "s": "zi_p_tenvin"}, {"h": "عً", "s": "ayin_tenvin"}, {"h": "غً", "s": "gayin_tenvin"}, {"h": "فً", "s": "fe_tenvin"},
+        {"h": "قً", "s": "kaf_tenvin"}, {"h": "كً", "s": "kef_tenvin"}, {"h": "لً", "s": "lam_tenvin"}, {"h": "مً", "s": "mim_tenvin"},
+        {"h": "نً", "s": "nun_tenvin"}, {"h": "وً", "s": "vav_tenvin"}, {"h": "هً", "s": "he_tenvin"}, {"h": "يً", "s": "ye_tenvin"}
     ]
 }
 
@@ -109,11 +118,11 @@ with st.sidebar:
     st.title("🌙 Akademi Paneli")
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     
-    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
+        # Test modundan çıkınca listeyi temizle
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
@@ -149,6 +158,7 @@ if st.session_state.alt_adim < len(liste):
     
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
+    # --- SES ÇALMA (Test modunda da otomatik çalsın) ---
     ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
     if st.session_state.calindi != ident:
         sesi_cal(mevcut['s'])
