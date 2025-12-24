@@ -266,9 +266,12 @@ if st.session_state.alt_adim < len(liste):
 else:
     st.balloons()
     st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
+    st.sidebar.divider()
+    st.sidebar.info("👨‍💻 Geliştirici: [Senin Adın] \n\n 📅 Versiyon: 1.0 (Tam Sürüm)")
     st.info(f"Toplam Puanınız: {st.session_state.get('puan', 0)}")
     if st.button("🔄 Başa Dön", use_container_width=True):
         st.session_state.alt_adim = 0
         if "test_liste" in st.session_state:
             del st.session_state["test_liste"]
         st.rerun()
+
