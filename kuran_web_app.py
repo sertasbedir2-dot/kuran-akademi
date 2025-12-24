@@ -1,46 +1,36 @@
 import streamlit as st
 import os, base64, time
 
-# --- 1. AYARLAR VE GÖRSEL TASARIM ---
+# --- 1. AYARLAR ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="📖", layout="centered")
 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
     .arapca-kutu {
-        text-align:center; 
-        font-size:200px; 
-        background-color:#f8f9fa; 
-        border: 4px solid #2E86C1;
-        border-radius:25px; 
-        padding:30px;
-        color: #1A5276;
-        font-family: 'Amiri', serif;
+        text-align:center; font-size:200px; background-color:#f8f9fa; 
+        border: 4px solid #2E86C1; border-radius:25px; padding:30px;
+        color: #1A5276; font-family: 'Amiri', serif;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        direction: rtl;
-        line-height: 1.1;
-        margin-bottom: 20px;
+        direction: rtl; line-height: 1.1; margin-bottom: 20px;
     }
-    .stProgress > div > div > div > div {
-        background-color: #2E86C1;
-    }
+    .stProgress > div > div > div > div { background-color: #2E86C1; }
     </style>
     """, unsafe_allow_html=True)
 
-# Hafıza Yönetimi
 if "bolum" not in st.session_state:
     st.session_state.update({"bolum": "1. Yalın Harfler", "alt_adim": 0, "calindi": ""})
 
-# --- DEBUG PANELİ (Dosyaları Kontrol Etmek İçin) ---
+# --- DEBUG: DOSYA KONTROLÜ ---
 with st.sidebar:
     st.title("🌙 Akademi Paneli")
-    if st.checkbox("Dosya Kontrolü Yap"):
-        if os.path.exists("sesler"):
-            files = os.listdir("sesler")
-            st.write(f"Toplam Dosya: {len(files)}")
-            st.write(files) # Bu listeyi açıp dosya isminin tam olarak ne olduğuna bakabilirsin
+    if os.path.exists("sesler"):
+        dosyalar = os.listdir("sesler")
+        st.success(f"Sistem Hazır: {len(dosyalar)} ses dosyası yüklü.")
+    else:
+        st.error("HATA: 'sesler' klasörü bulunamadı!")
 
-# --- 2. SES ÇALMA FONKSİYONU ---
+# --- 2. SES MOTORU ---
 def sesi_cal(dosya_adi):
     yol = os.path.join("sesler", f"{dosya_adi}.mp3")
     if os.path.exists(yol):
@@ -48,16 +38,11 @@ def sesi_cal(dosya_adi):
             data = f.read()
             b64 = base64.b64encode(data).decode()
             unique_timestamp = int(time.time() * 1000)
-            audio_html = f"""
-                <audio autoplay key="a_{unique_timestamp}">
-                    <source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3">
-                </audio>
-            """
-            st.markdown(audio_html, unsafe_allow_html=True)
+            st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
-        st.warning(f"🔈 Ses bulunamadı: {dosya_adi}.mp3")
+        st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (DOSYA İSİMLERİ DÜZELTİLDİ) ---
+# --- 3. MÜFREDAT (Dosya Listene %100 Eşitlendi) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -70,9 +55,7 @@ mufredat = {
     ],
     "2. Üstün (E-A)": [
         {"h": "اَ", "s": "e"}, 
-        {"h": "بَ", "s": "be_ustun"}, # be_u -> be_ustun olarak düzeltildi
-        {"h": "تَ", "s": "te_ustun"}, # te_u -> te_ustun olarak düzeltildi
-        {"h": "ثَ", "s": "se_ustun"}, # se_u -> se_ustun olarak düzeltildi
+        {"h": "بَ", "s": "be_ustun"}, {"h": "تَ", "s": "te_ustun"}, {"h": "ثَ", "s": "se_ustun"},
         {"h": "جَ", "s": "cim_ustun"}, {"h": "حَ", "s": "ha_ustun"}, {"h": "خَ", "s": "hi_ustun"}, {"h": "دَ", "s": "dal_ustun"},
         {"h": "ذَ", "s": "zel_ustun"}, {"h": "رَ", "s": "re_ustun"}, {"h": "زَ", "s": "ze_ustun"}, {"h": "سَ", "s": "sin_ustun"},
         {"h": "شَ", "s": "sin_noktali_ustun"}, {"h": "صَ", "s": "sad_ustun"}, {"h": "ضَ", "s": "dad_ustun"}, {"h": "طَ", "s": "ti_ustun"},
@@ -81,10 +64,8 @@ mufredat = {
         {"h": "نَ", "s": "nun_ustun"}, {"h": "وَ", "s": "vav_ustun"}, {"h": "هَ", "s": "he_ustun"}, {"h": "يَ", "s": "ye_ustun"}
     ],
     "3. Esre (İ-I)": [
-        {"h": "اِ", "s": "i_ince"}, # i -> i_ince olarak düzeltildi
-        {"h": "بِ", "s": "bi_esre"}, # bi -> bi_esre olarak düzeltildi
-        {"h": "تِ", "s": "te_esre"}, # ti -> te_esre olarak düzeltildi (dosya ismine göre)
-        {"h": "ثِ", "s": "se_esre"}, # si_p -> se_esre olarak düzeltildi
+        {"h": "اِ", "s": "i_ince"}, 
+        {"h": "بِ", "s": "be_esre"}, {"h": "تِ", "s": "te_esre"}, {"h": "ثِ", "s": "se_esre"},
         {"h": "جِ", "s": "cim_esre"}, {"h": "حِ", "s": "ha_esre"}, {"h": "خِ", "s": "hi_esre"}, {"h": "دِ", "s": "dal_esre"},
         {"h": "ذِ", "s": "zel_esre"}, {"h": "رِ", "s": "re_esre"}, {"h": "زِ", "s": "ze_esre"}, {"h": "سِ", "s": "sin_esre"},
         {"h": "شِ", "s": "sin_noktali_esre"}, {"h": "صِ", "s": "sad_esre"}, {"h": "ضِ", "s": "dad_esre"}, {"h": "طِ", "s": "ti_esre"},
@@ -93,10 +74,8 @@ mufredat = {
         {"h": "نِ", "s": "nun_esre"}, {"h": "وِ", "s": "vav_esre"}, {"h": "هِ", "s": "he_esre"}, {"h": "يِ", "s": "ye_esre"}
     ],
     "4. Ötre (Ü-U)": [
-        {"h": "اُ", "s": "u_otre"}, # u -> u_otre
-        {"h": "بُ", "s": "bu_otre"}, # bu -> bu_otre
-        {"h": "تُ", "s": "tu_otre"}, # tu -> tu_otre
-        {"h": "ثُ", "s": "su_p_otre"}, # su_p -> su_p_otre (veya se_otre, dosya listene bakılmalı)
+        {"h": "اُ", "s": "u_otre"}, 
+        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "se_otre"},
         {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
         {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
         {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
@@ -106,7 +85,7 @@ mufredat = {
     ]
 }
 
-# --- ARAYÜZ ---
+# --- 4. ARAYÜZ ---
 with st.sidebar:
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
     if secilen != st.session_state.bolum:
@@ -117,14 +96,11 @@ with st.sidebar:
     st.divider()
     st.success(f"Puan: {st.session_state.get('puan', 0)}")
 
-# --- ANA EKRAN ---
 liste = mufredat[st.session_state.bolum]
 if st.session_state.alt_adim < len(liste):
     mevcut = liste[st.session_state.alt_adim]
-    
     st.subheader(f"📖 {st.session_state.bolum}")
     st.progress((st.session_state.alt_adim + 1) / len(liste))
-    
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
     ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
@@ -142,7 +118,7 @@ if st.session_state.alt_adim < len(liste):
             st.rerun()
 else:
     st.balloons()
-    st.success("Tebrikler!")
+    st.success("Bölüm Bitti!")
     if st.button("Tekrarla", use_container_width=True):
         st.session_state.alt_adim = 0
         st.rerun()
