@@ -113,6 +113,7 @@ def sesi_cal(dosya_adi):
             unique_timestamp = int(time.time() * 1000)
             st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
     else:
+        # Ses dosyası yoksa uyarı verme
         pass
 
 # --- 3. MÜFREDAT ---
@@ -290,4 +291,60 @@ if mod == "📖 Çalışma Modu":
         c1, c2 = st.columns(2)
         with c1:
             if st.button("🔊 Tekrar Dinle", use_container_width=True): 
-                ses
+                sesi_cal(mevcut['s'])
+                
+        with c2:
+            if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
+                st.session_state.alt_adim += 1
+                st.session_state.puan += 5 # Çalışma puanı
+                st.rerun()
+    else:
+        st.balloons()
+        st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
+        if st.button("🔄 Başa Dön", use_container_width=True):
+            st.session_state.alt_adim = 0
+            st.rerun()
+
+# ================================
+# MOD 2: SINAV MODU (QUIZ OYUNU)
+# ================================
+else:
+    st.subheader(f"🎮 Sesi Bul: {st.session_state.bolum}")
+    st.info("🔊 Sesi dinle ve doğru harfi bul!")
+    
+    # Yeni soru oluştur (Eğer hedef yoksa)
+    if st.session_state.quiz_hedef is None:
+        hedef = random.choice(ders_listesi)
+        # Yanlış seçenekler (Kendisi hariç 2 tane)
+        yanlislar = random.sample([x for x in ders_listesi if x != hedef], 2)
+        secenekler = [hedef] + yanlislar
+        random.shuffle(secenekler)
+        
+        st.session_state.quiz_hedef = hedef
+        st.session_state.quiz_secenekler = secenekler
+        
+        # Sesi Çal
+        sesi_cal(hedef['s'])
+
+    # Sesi Tekrar Çal Butonu
+    if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True):
+        sesi_cal(st.session_state.quiz_hedef['s'])
+
+    st.write("") # Boşluk
+
+    # Seçenekleri Göster (3 Buton Yan Yana)
+    cols = st.columns(3)
+    for i, secenek in enumerate(st.session_state.quiz_secenekler):
+        with cols[i]:
+            # Butona basılınca kontrol et
+            if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
+                if secenek == st.session_state.quiz_hedef:
+                    st.balloons()
+                    st.success("✅ DOĞRU CEVAP!")
+                    st.session_state.puan += 20
+                    time.sleep(1) # Kutlama süresi
+                    st.session_state.quiz_hedef = None # Yeni soru için sıfırla
+                    st.rerun()
+                else:
+                    st.error("❌ Yanlış, tekrar dene!")
+                    st.session_state.puan = max(0, st.session_state.puan - 5)
