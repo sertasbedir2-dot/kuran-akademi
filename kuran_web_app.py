@@ -1,7 +1,7 @@
 import streamlit as st
 import os, base64, time, random
 
-# --- 1. AYARLAR VE GOLD TASARIM (DÜZELTİLDİ: DEVASA HARFLER) ---
+# --- 1. AYARLAR VE TASARIM (DEVASA HARFLER İÇİN ÖZEL CSS) ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="🌙", layout="centered")
 
 st.markdown("""
@@ -13,56 +13,43 @@ st.markdown("""
         background: linear-gradient(to bottom, #fdfbf7, #e6e9f0);
     }
 
-    /* Arapça Harf Kutusu (Çalışma Modu) */
-    .arapca-kutu {
-        text-align: center; 
-        font-size: 180px; 
-        background-color: #ffffff; 
-        border: 4px solid #d4af37; 
-        border-radius: 30px; 
-        padding: 40px;
-        color: #2c3e50; 
-        font-family: 'Amiri', serif;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        direction: rtl; 
-        line-height: 1.2; 
-        margin-bottom: 30px;
-        transition: transform 0.3s ease; 
-    }
-    .arapca-kutu:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 35px rgba(212, 175, 55, 0.3);
-    }
-
-    /* --- BUTON TASARIMLARI (DEVASA YAPILDI) --- */
-
-    /* 1. Normal Butonlar (Seçenekler ve Dinle Butonu) */
+    /* 1. ARAPÇA HARF BUTONLARI (BEYAZ OLANLAR)
+       Burayı sadece harfler kullanacağı için fontu devasa yapıyoruz.
+    */
     .stButton > button {
         font-family: 'Amiri', serif !important;
-        font-size: 85px !important; /* Harfler artık ÇOK BÜYÜK */
+        font-size: 100px !important;  /* HARF BOYUTU BURADAN AYARLANIYOR */
         font-weight: bold;
-        padding: 0px !important; /* Boşlukları sıfırla ki harf sığsın */
-        min-height: 150px !important; /* Kutu yüksekliği */
+        
+        /* Kutunun boyutu */
+        height: 160px !important; 
+        width: 100% !important;
+        
+        /* Harfi merkeze çivilemek için ayarlar */
+        padding: 0px !important;
+        margin: 0px !important;
+        line-height: 1.2 !important; /* Satır yüksekliği, harfi aşağı yukarı oynatır */
+        
         border-radius: 20px;
         border: 3px solid #d4af37;
         background-color: white;
         color: #2c3e50;
         transition: 0.2s;
+        
+        /* Flexbox ile tam orta */
         display: flex;
         align-items: center;
         justify-content: center;
-        line-height: 1 !important;
-        padding-bottom: 20px !important; /* Arapça harfleri görsel olarak ortalamak için */
     }
     
-    /* Üzerine gelince (Hover) */
+    /* Beyaz Buton Hover (Üzerine gelince) */
     .stButton > button:hover {
-        background-color: #fcf3cf; /* Sarı */
+        background-color: #fcf3cf; 
         border-color: #b7950b;
         transform: scale(1.03);
     }
 
-    /* Tıklanıp bırakılınca (Focus) */
+    /* Beyaz Buton Focus (Tıklama sonrası renk takılmasını önler) */
     .stButton > button:focus:not(:active) {
         background-color: white !important;
         border-color: #d4af37 !important;
@@ -70,15 +57,18 @@ st.markdown("""
         box-shadow: none !important;
     }
 
-    /* 2. Kırmızı (Primary) Buton (Sonraki Harf) */
-    /* Bu butonun yazısı çok büyük olmasın diye özel ayar */
+    /* 2. KONTROL BUTONLARI (KIRMIZI OLANLAR - PRIMARY) 
+       Tekrar Dinle ve Sonraki Harf butonları buraya dahildir.
+       Bunların yazısı normal kalsın.
+    */
     .stButton > button[kind="primary"] {
         background-color: #ff4b4b !important;
         color: white !important;
         border: none !important;
-        font-size: 24px !important; /* Normal boyut */
-        min-height: 60px !important;
-        padding-bottom: 0px !important;
+        
+        font-size: 24px !important; /* Normal okuma boyutu */
+        height: 60px !important;    /* Normal yükseklik */
+        line-height: normal !important;
     }
 
     /* Kırmızı Buton Hover */
@@ -93,6 +83,22 @@ st.markdown("""
         background-color: #ff4b4b !important;
         color: white !important;
         box-shadow: none !important;
+    }
+
+    /* Çalışma Modundaki Büyük Gösterge Kutusu */
+    .arapca-kutu {
+        text-align: center; 
+        font-size: 180px; 
+        background-color: #ffffff; 
+        border: 4px solid #d4af37; 
+        border-radius: 30px; 
+        padding: 40px;
+        color: #2c3e50; 
+        font-family: 'Amiri', serif;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        direction: rtl; 
+        line-height: 1.2; 
+        margin-bottom: 30px;
     }
 
     /* İlerleme Çubuğu Rengi */
@@ -299,7 +305,8 @@ if mod == "📖 Çalışma Modu":
 
         c1, c2 = st.columns(2)
         with c1:
-            if st.button("🔊 Dinle", use_container_width=True): 
+            # Buradaki buton primary (Kırmızı)
+            if st.button("🔊 Tekrar Dinle", use_container_width=True, type="primary"): 
                 sesi_cal(mevcut['s'])
                 
         with c2:
@@ -310,7 +317,7 @@ if mod == "📖 Çalışma Modu":
     else:
         st.balloons()
         st.success(f"🎉 Tebrikler! {st.session_state.bolum} tamamlandı.")
-        if st.button("🔄 Başa Dön", use_container_width=True):
+        if st.button("🔄 Başa Dön", use_container_width=True, type="primary"):
             st.session_state.alt_adim = 0
             st.rerun()
 
@@ -335,8 +342,7 @@ else:
         # Sesi Çal
         sesi_cal(hedef['s'])
 
-    # Sesi Tekrar Çal Butonu
-    # Bu butona özel stil veriyoruz ki devasa olmasın
+    # Sesi Tekrar Çal Butonu (Kırmızı/Primary)
     if st.button("🔊 Sesi Tekrar Dinle", use_container_width=True, type="primary"):
         sesi_cal(st.session_state.quiz_hedef['s'])
 
@@ -346,7 +352,7 @@ else:
     cols = st.columns(3)
     for i, secenek in enumerate(st.session_state.quiz_secenekler):
         with cols[i]:
-            # Butona basılınca kontrol et
+            # Butona basılınca kontrol et (Beyaz butonlar, CSS ile büyütüldü)
             if st.button(secenek["h"], key=f"q_{i}", use_container_width=True):
                 if secenek == st.session_state.quiz_hedef:
                     st.balloons()
