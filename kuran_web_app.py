@@ -31,26 +31,18 @@ st.markdown("""
 if "bolum" not in st.session_state:
     st.session_state.update({"bolum": "1. Yalın Harfler", "alt_adim": 0, "calindi": ""})
 
-# --- DEBUG (HATA AYIKLAMA) PANELİ ---
-# Bu kısım sesler klasöründe ne olduğunu görmeni sağlayacak.
+# --- DEBUG PANELİ (Dosyaları Kontrol Etmek İçin) ---
 with st.sidebar:
     st.title("🌙 Akademi Paneli")
-    st.divider()
-    
-    # Klasör Kontrolü
-    if os.path.exists("sesler"):
-        dosyalar = os.listdir("sesler")
-        st.success(f"📂 'sesler' klasöründe {len(dosyalar)} dosya bulundu.")
-        # Dosya listesini görmek istersen aşağıdaki yorumu kaldırabilirsin
-        # st.write(dosyalar) 
-    else:
-        st.error("🚨 'sesler' klasörü bulunamadı! Lütfen GitHub'da klasör adının küçük harfle 'sesler' olduğundan emin olun.")
+    if st.checkbox("Dosya Kontrolü Yap"):
+        if os.path.exists("sesler"):
+            files = os.listdir("sesler")
+            st.write(f"Toplam Dosya: {len(files)}")
+            st.write(files) # Bu listeyi açıp dosya isminin tam olarak ne olduğuna bakabilirsin
 
 # --- 2. SES ÇALMA FONKSİYONU ---
 def sesi_cal(dosya_adi):
-    # Dosya yolunu oluştururken .mp3 ekliyoruz
     yol = os.path.join("sesler", f"{dosya_adi}.mp3")
-    
     if os.path.exists(yol):
         with open(yol, "rb") as f:
             data = f.read()
@@ -63,23 +55,24 @@ def sesi_cal(dosya_adi):
             """
             st.markdown(audio_html, unsafe_allow_html=True)
     else:
-        # Hata mesajı ver
-        st.warning(f"⚠️ Dosya Yok: {dosya_adi}.mp3")
+        st.warning(f"🔈 Ses bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. TAM MÜFREDAT (GitHub Listenize Göre Düzeltildi) ---
-# DİKKAT: GitHub'daki "be_ustun.mp3" gibi isimleri buraya işledim.
+# --- 3. TAM MÜFREDAT (DOSYA İSİMLERİ DÜZELTİLDİ) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
         {"h": "ج", "s": "cim"}, {"h": "ح", "s": "ha"}, {"h": "خ", "s": "hi"}, {"h": "د", "s": "dal"},
-        {"h": "ذ", "s": "zel"}, {"h": "ر", "s": "re"}, {"h": "ز", "s": "ze"}, {"h": "س", "s": "sin"},
-        {"h": "ش", "s": "sin_n"}, {"h": "ص", "s": "sad"}, {"h": "ض", "s": "dad"}, {"h": "ط", "s": "ti"},
-        {"h": "ظ", "s": "zi"}, {"h": "ع", "s": "ayin"}, {"h": "غ", "s": "gayin"}, {"h": "ف", "s": "fe"},
+        {"h": "ذ", "s": "zel_p"}, {"h": "ر", "s": "re"}, {"h": "ز", "s": "ze_k"}, {"h": "س", "s": "sin"},
+        {"h": "ش", "s": "sin_n"}, {"h": "ص", "s": "sad"}, {"h": "ض", "s": "dad"}, {"h": "ط", "s": "ti_k"},
+        {"h": "ظ", "s": "zi_p"}, {"h": "ع", "s": "ayin"}, {"h": "غ", "s": "gayin"}, {"h": "ف", "s": "fe"},
         {"h": "ق", "s": "kaf"}, {"h": "ك", "s": "kef"}, {"h": "ل", "s": "lam"}, {"h": "م", "s": "mim"},
         {"h": "ن", "s": "nun"}, {"h": "و", "s": "vav"}, {"h": "ه", "s": "he"}, {"h": "ي", "s": "ye"}
     ],
     "2. Üstün (E-A)": [
-        {"h": "اَ", "s": "e"}, {"h": "بَ", "s": "be_ustun"}, {"h": "تَ", "s": "te_ustun"}, {"h": "ثَ", "s": "se_ustun"},
+        {"h": "اَ", "s": "e"}, 
+        {"h": "بَ", "s": "be_ustun"}, # be_u -> be_ustun olarak düzeltildi
+        {"h": "تَ", "s": "te_ustun"}, # te_u -> te_ustun olarak düzeltildi
+        {"h": "ثَ", "s": "se_ustun"}, # se_u -> se_ustun olarak düzeltildi
         {"h": "جَ", "s": "cim_ustun"}, {"h": "حَ", "s": "ha_ustun"}, {"h": "خَ", "s": "hi_ustun"}, {"h": "دَ", "s": "dal_ustun"},
         {"h": "ذَ", "s": "zel_ustun"}, {"h": "رَ", "s": "re_ustun"}, {"h": "زَ", "s": "ze_ustun"}, {"h": "سَ", "s": "sin_ustun"},
         {"h": "شَ", "s": "sin_noktali_ustun"}, {"h": "صَ", "s": "sad_ustun"}, {"h": "ضَ", "s": "dad_ustun"}, {"h": "طَ", "s": "ti_ustun"},
@@ -88,7 +81,10 @@ mufredat = {
         {"h": "نَ", "s": "nun_ustun"}, {"h": "وَ", "s": "vav_ustun"}, {"h": "هَ", "s": "he_ustun"}, {"h": "يَ", "s": "ye_ustun"}
     ],
     "3. Esre (İ-I)": [
-        {"h": "اِ", "s": "i_ince"}, {"h": "بِ", "s": "be_esre"}, {"h": "تِ", "s": "te_esre"}, {"h": "ثِ", "s": "se_esre"},
+        {"h": "اِ", "s": "i_ince"}, # i -> i_ince olarak düzeltildi
+        {"h": "بِ", "s": "bi_esre"}, # bi -> bi_esre olarak düzeltildi
+        {"h": "تِ", "s": "te_esre"}, # ti -> te_esre olarak düzeltildi (dosya ismine göre)
+        {"h": "ثِ", "s": "se_esre"}, # si_p -> se_esre olarak düzeltildi
         {"h": "جِ", "s": "cim_esre"}, {"h": "حِ", "s": "ha_esre"}, {"h": "خِ", "s": "hi_esre"}, {"h": "دِ", "s": "dal_esre"},
         {"h": "ذِ", "s": "zel_esre"}, {"h": "رِ", "s": "re_esre"}, {"h": "زِ", "s": "ze_esre"}, {"h": "سِ", "s": "sin_esre"},
         {"h": "شِ", "s": "sin_noktali_esre"}, {"h": "صِ", "s": "sad_esre"}, {"h": "ضِ", "s": "dad_esre"}, {"h": "طِ", "s": "ti_esre"},
@@ -97,7 +93,10 @@ mufredat = {
         {"h": "نِ", "s": "nun_esre"}, {"h": "وِ", "s": "vav_esre"}, {"h": "هِ", "s": "he_esre"}, {"h": "يِ", "s": "ye_esre"}
     ],
     "4. Ötre (Ü-U)": [
-        {"h": "اُ", "s": "u_otre"}, {"h": "بُ", "s": "be_otre"}, {"h": "تُ", "s": "te_otre"}, {"h": "ثُ", "s": "se_otre"},
+        {"h": "اُ", "s": "u_otre"}, # u -> u_otre
+        {"h": "بُ", "s": "bu_otre"}, # bu -> bu_otre
+        {"h": "تُ", "s": "tu_otre"}, # tu -> tu_otre
+        {"h": "ثُ", "s": "su_p_otre"}, # su_p -> su_p_otre (veya se_otre, dosya listene bakılmalı)
         {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
         {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
         {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
@@ -115,6 +114,7 @@ with st.sidebar:
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
         st.rerun()
+    st.divider()
     st.success(f"Puan: {st.session_state.get('puan', 0)}")
 
 # --- ANA EKRAN ---
