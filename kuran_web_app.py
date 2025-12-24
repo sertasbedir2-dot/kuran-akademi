@@ -1,36 +1,37 @@
 import streamlit as st
-import os, base64, time
+import os, base64, time, random  # random kütüphanesini ekledik
 
-# --- 1. AYARLAR ---
+# --- 1. AYARLAR VE GÖRSEL TASARIM ---
 st.set_page_config(page_title="Elif-Ba Akademi", page_icon="📖", layout="centered")
 
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
     .arapca-kutu {
-        text-align:center; font-size:200px; background-color:#f8f9fa; 
-        border: 4px solid #2E86C1; border-radius:25px; padding:30px;
-        color: #1A5276; font-family: 'Amiri', serif;
+        text-align:center; 
+        font-size:200px; 
+        background-color:#f8f9fa; 
+        border: 4px solid #2E86C1;
+        border-radius:25px; 
+        padding:30px;
+        color: #1A5276;
+        font-family: 'Amiri', serif;
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        direction: rtl; line-height: 1.1; margin-bottom: 20px;
+        direction: rtl;
+        line-height: 1.1;
+        margin-bottom: 20px;
     }
-    .stProgress > div > div > div > div { background-color: #2E86C1; }
+    .stProgress > div > div > div > div {
+        background-color: #2E86C1;
+    }
     </style>
     """, unsafe_allow_html=True)
 
+# Hafıza Yönetimi
 if "bolum" not in st.session_state:
     st.session_state.update({"bolum": "1. Yalın Harfler", "alt_adim": 0, "calindi": ""})
 
-# --- DEBUG: DOSYA KONTROLÜ ---
-with st.sidebar:
-    st.title("🌙 Akademi Paneli")
-    if os.path.exists("sesler"):
-        dosyalar = os.listdir("sesler")
-        st.success(f"Sistem Hazır: {len(dosyalar)} ses dosyası yüklü.")
-    else:
-        st.error("HATA: 'sesler' klasörü bulunamadı!")
-
-# --- 2. SES MOTORU ---
+# --- 2. SES ÇALMA FONKSİYONU ---
 def sesi_cal(dosya_adi):
     yol = os.path.join("sesler", f"{dosya_adi}.mp3")
     if os.path.exists(yol):
@@ -38,11 +39,16 @@ def sesi_cal(dosya_adi):
             data = f.read()
             b64 = base64.b64encode(data).decode()
             unique_timestamp = int(time.time() * 1000)
-            st.markdown(f'<audio autoplay key="a_{unique_timestamp}"><source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3"></audio>', unsafe_allow_html=True)
+            audio_html = f"""
+                <audio autoplay key="a_{unique_timestamp}">
+                    <source src="data:audio/mp3;base64,{b64}#t={unique_timestamp}" type="audio/mp3">
+                </audio>
+            """
+            st.markdown(audio_html, unsafe_allow_html=True)
     else:
-        st.warning(f"⚠️ Dosya Bulunamadı: {dosya_adi}.mp3")
+        st.warning(f"🔈 Ses bulunamadı: {dosya_adi}.mp3")
 
-# --- 3. MÜFREDAT (Dosya Listene %100 Eşitlendi) ---
+# --- 3. TAM MÜFREDAT (Senin Çalışan Kodunla Aynı) ---
 mufredat = {
     "1. Yalın Harfler": [
         {"h": "ا", "s": "elif"}, {"h": "ب", "s": "be"}, {"h": "ت", "s": "te"}, {"h": "ث", "s": "se"},
@@ -75,7 +81,7 @@ mufredat = {
     ],
     "4. Ötre (Ü-U)": [
         {"h": "اُ", "s": "u_otre"}, 
-        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "se_otre"},
+        {"h": "بُ", "s": "bu_otre"}, {"h": "تُ", "s": "tu_otre"}, {"h": "ثُ", "s": "su_p_otre"},
         {"h": "جُ", "s": "cim_otre"}, {"h": "حُ", "s": "ha_otre"}, {"h": "خُ", "s": "hi_otre"}, {"h": "دُ", "s": "dal_otre"},
         {"h": "ذُ", "s": "zel_otre"}, {"h": "رُ", "s": "re_otre"}, {"h": "زُ", "s": "ze_otre"}, {"h": "سُ", "s": "sin_otre"},
         {"h": "شُ", "s": "sin_noktali_otre"}, {"h": "صُ", "s": "sad_otre"}, {"h": "ضُ", "s": "dad_otre"}, {"h": "طُ", "s": "ti_otre"},
@@ -85,40 +91,85 @@ mufredat = {
     ]
 }
 
-# --- 4. ARAYÜZ ---
+# --- 4. ARAYÜZ VE TEST MODU MANTIĞI ---
 with st.sidebar:
+    st.title("🌙 Akademi Paneli")
     secilen = st.selectbox("Ders Seçin:", list(mufredat.keys()))
+    
+    # Bölüm değişirse sıfırla
     if secilen != st.session_state.bolum:
         st.session_state.bolum = secilen
         st.session_state.alt_adim = 0
         st.session_state.calindi = ""
+        # Test listesini de temizle ki yeni bölüm için yeniden karıştırsın
+        if "test_liste" in st.session_state:
+            del st.session_state["test_liste"]
         st.rerun()
-    st.divider()
-    st.success(f"Puan: {st.session_state.get('puan', 0)}")
 
-liste = mufredat[st.session_state.bolum]
+    st.divider()
+    # TEST MODU BUTONU
+    test_modu = st.checkbox("🎯 Hızlı Test Modu (Karışık Sor)")
+    
+    st.divider()
+    st.success(f"Toplam Puan: {st.session_state.get('puan', 0)}")
+
+# --- ANA EKRAN MANTIĞI ---
+standart_liste = mufredat[st.session_state.bolum]
+
+if test_modu:
+    # Eğer test modu açıksa ve henüz karıştırılmış liste yoksa veya bölüm değiştiyse karıştır
+    if "test_liste" not in st.session_state:
+        st.session_state.test_liste = standart_liste.copy()
+        random.shuffle(st.session_state.test_liste)
+        st.session_state.alt_adim = 0 # Test başladığında baştan başla
+        
+    liste = st.session_state.test_liste
+    baslik_ek = " (TEST MODU)"
+else:
+    # Test modu kapalıysa normal listeyi kullan
+    liste = standart_liste
+    # Test modu kapanırsa normal listenin neresinde kaldıysak oradan devam ederiz
+    # ya da sıfırlayabiliriz. Şimdilik karışıklık olmasın diye test listesini siliyoruz.
+    if "test_liste" in st.session_state:
+        del st.session_state["test_liste"]
+        st.session_state.alt_adim = 0
+    baslik_ek = ""
+
+# --- GÖSTERİM KISMI ---
 if st.session_state.alt_adim < len(liste):
     mevcut = liste[st.session_state.alt_adim]
-    st.subheader(f"📖 {st.session_state.bolum}")
+    
+    st.subheader(f"📖 {st.session_state.bolum}{baslik_ek}")
     st.progress((st.session_state.alt_adim + 1) / len(liste))
+    
     st.markdown(f'<div class="arapca-kutu">{mevcut["h"]}</div>', unsafe_allow_html=True)
     
-    ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
-    if st.session_state.calindi != ident:
-        sesi_cal(mevcut['s'])
-        st.session_state.calindi = ident
+    # Normal modda otomatik çal, Test modunda otomatik çalma (kullanıcı tahmin etsin)
+    if not test_modu:
+        ident = f"{st.session_state.bolum}_{st.session_state.alt_adim}"
+        if st.session_state.calindi != ident:
+            sesi_cal(mevcut['s'])
+            st.session_state.calindi = ident
 
     c1, c2 = st.columns(2)
     with c1:
-        if st.button("🔊 Tekrar Dinle", use_container_width=True): sesi_cal(mevcut['s'])
+        # Buton yazısı moda göre değişsin
+        btn_text = "🔊 Cevabı Gör/Dinle" if test_modu else "🔊 Tekrar Dinle"
+        if st.button(btn_text, use_container_width=True): 
+            sesi_cal(mevcut['s'])
+            
     with c2:
-        if st.button("➡️ Sonraki", use_container_width=True):
+        if st.button("➡️ Sonraki Harf", use_container_width=True, type="primary"):
             st.session_state.alt_adim += 1
-            st.session_state.puan = st.session_state.get('puan', 0) + 10
+            # Test modundaysan puan ver
+            if test_modu:
+                st.session_state.puan = st.session_state.get('puan', 0) + 10
             st.rerun()
 else:
     st.balloons()
-    st.success("Bölüm Bitti!")
-    if st.button("Tekrarla", use_container_width=True):
+    st.success(f"Tebrikler! {st.session_state.bolum} tamamlandı.")
+    if st.button("🔄 Başa Dön", use_container_width=True):
         st.session_state.alt_adim = 0
+        if "test_liste" in st.session_state:
+            del st.session_state["test_liste"] # Yeni tur için listeyi sil
         st.rerun()
